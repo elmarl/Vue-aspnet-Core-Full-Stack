@@ -12,7 +12,8 @@
         </span>
       </v-col>
           <v-col>
-        <v-btn @click="$emit('edit_item', eventitem['id'])" depressed small>Osav6tjad</v-btn>
+              <router-link :to=`eventitem["id"]` tag="button">Osav6tjad</router-link>
+        <!--<v-btn @click="$emit('edit_item', eventitem['id'])" to=eventitem["id"] depressed small>Osav6tjad</v-btn>-->
       </v-col>
           <v-col>
         <v-btn @click="$emit('del_item', eventitem['id'])" depressed small>delete</v-btn>

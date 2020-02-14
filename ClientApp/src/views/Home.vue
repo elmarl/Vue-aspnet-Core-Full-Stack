@@ -33,7 +33,7 @@
                     <v-card class="pa-2" outlined tile>
                         <div class="center-text bkg">Yritused</div>
                         <div v-bind:key="i.id" v-for="i in events">
-                            <Event_comp :eventitem="i" />
+                            <Event_comp :eventitem="i" v-on:del_item="del_item" v-on:edit_item="edit_item"/>
                         </div>
                         
                         
@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-//import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+// import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 import Event_comp from '@/components/Event_comp.vue';
 import { Events } from '../models/Events';
 import axios from 'axios';
@@ -72,9 +72,9 @@ export default class Home extends Vue {
     await this.fetchWeatherForecasts();
   }
 
-    private async fetchWeatherForecasts() { 
-        var dt = new Date();
-        var mydate = dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
+    private async fetchWeatherForecasts() {
+        const dt = new Date();
+        const mydate = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
         this.events.push(new Events(0, 'test', mydate, 'tll', 'det'));
         this.events.push(new Events(1, 'test2', mydate, 'par', 'det'));
         try {
@@ -86,11 +86,12 @@ export default class Home extends Vue {
         }
         this.loading = false;
     }
-    public del_item (id:number) {
-        alert(id);
+    private del_item(id: number) {
+        const index: number = this.events.findIndex((x) => x.id === id);
+        this.events.splice(index, 1);
     }
-    private edit_item (id:number) {
-        alert(id);
+    private edit_item(id: number) {
+        // alert(id);
     }
 }
 
