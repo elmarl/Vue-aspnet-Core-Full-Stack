@@ -27,7 +27,7 @@
             Are you sure you're using ASP.NET Core endpoint? (default at <a href="http://localhost:5000/fetch-data">http://localhost:5000</a>)<br>
             API call would fail with status code 404 when calling from Vue app (default at <a href="http://localhost:8080/fetch-data">http://localhost:8080</a>) without devServer proxy settings in vue.config.js file.
         </v-alert>-->
-
+        <!--added container class to container in App.vue to keep row from being too wide-->
             <v-row>
                 <v-col cols="6">
                     <v-card class="pa-2" outlined tile>
@@ -52,7 +52,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Event_comp from '@/components/Event_comp.vue';
-import { Events } from '../models/Events';
+import { Event } from '../models/Event';
 import axios from 'axios';
 
 @Component({
@@ -62,38 +62,49 @@ import axios from 'axios';
 })
 
 export default class Home extends Vue {
-    private events: Events[] = [];
+    private events: Event[] = [];
     private errorMessage: string = 'Error while loading event data.';
     private showError: boolean = false;
     private loading: boolean = true;
 
     private async created() {
-    await this.fetchWeatherForecasts();
+    await this.fetchEvents();
   }
 
-    private async fetchWeatherForecasts() {
-        const dt = new Date();
+    private async fetchEvents() {
+       /* const dt = new Date();
         const mydate = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
-        this.events.push(new Events(0, 'test', dt, 'tll', 'det'));
-        this.events.push(new Events(1, 'test2', dt, 'par', 'det'));
+        this.events.push(new Event(0, 'test', dt, 'tll', 'det'));
+        this.events.push(new Event(1, 'test2', dt, 'par', 'det')); */
         try {
-            const response = await axios.get<Events[]>('api/Events');
+            const response = await axios.get<Event[]>('api/Events');
             this.events = response.data;
         } catch (e) {
             this.showError = true;
-            this.errorMessage = `Error while loading weather forecast: ${e.message}.`;
+            this.errorMessage = `Error while loading events: ${e.message}.`;
         }
         this.loading = false;
     }
-    private del_item(id: number) {
+    private async del_item(id: number) {
+        //delete on front end
         const index: number = this.events.findIndex((x) => x.id === id);
         this.events.splice(index, 1);
+        //delete on back end using path: 'api/Events/{id}
+        try {
+            let path: string = 'api/Events/';
+            let url: string = path.concat(id.toString());
+            const response = await axios.delete(url); //axios.get<Events[]>('api/Events');
+            // this.events = response.data;
+        } catch (e) {
+            this.showError = true;
+            this.errorMessage = `Error while deleting event: ${e.message}.`;
+            alert(this.errorMessage);
+        }
     }
     private edit_item(id: number) {
         // alert(id);
     }
 }
-
 </script>
 
 <style scoped>

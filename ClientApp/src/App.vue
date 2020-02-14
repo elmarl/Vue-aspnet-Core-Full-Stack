@@ -12,7 +12,7 @@
           <img src="../public/img/icons/symbol.svg" class="column" />
       </v-app-bar>
 
-    <v-content >
+    <v-content class="container">
       <router-view/>
     </v-content>
 
