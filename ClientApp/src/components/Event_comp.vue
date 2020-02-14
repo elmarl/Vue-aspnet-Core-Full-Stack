@@ -12,7 +12,7 @@
         </span>
       </v-col>
           <v-col>
-              <router-link :to=`eventitem["id"]` tag="button">Osav6tjad</router-link>
+              <router-link :to="routemsg" tag="button">Osav6tjad</router-link>
         <!--<v-btn @click="$emit('edit_item', eventitem['id'])" to=eventitem["id"] depressed small>Osav6tjad</v-btn>-->
       </v-col>
           <v-col>
@@ -27,6 +27,18 @@ export default {
   name: 'Event_component',
   props: {
     eventitem: Object,
+  },
+    data () {
+    return {
+        message: 'Hello'
+    }
+  },
+  computed: {
+    // a computed getter
+    routemsg: function () {
+    //alert(this.eventitem.id)
+      return "/"+this.eventitem.id.toString();
+    },
   },
 };
 </script>
