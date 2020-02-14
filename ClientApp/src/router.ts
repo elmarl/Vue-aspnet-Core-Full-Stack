@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
-import EditEvent from './views/EditEvent.vue'
+import EditEvent from './views/EditEvent.vue';
 
 Vue.use(Router);
 
@@ -18,6 +18,11 @@ export default new Router({
         path: '/uritus/:id',
         name: 'edit_event',
         component: EditEvent,
+    },
+    {
+        path: '/LisaUritus',
+        name: 'add_event',
+        component: AddEvent,
     },
     {
         path: '/counter',

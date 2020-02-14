@@ -10,7 +10,13 @@
 </template>
 
 <script>
-
+export default {
+  name: 'HelloWorld',
+  props: {
+    quote: String,
+    author: String,
+  },
+};
 </script>
 
 <style scoped>

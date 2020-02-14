@@ -75,8 +75,8 @@ export default class Home extends Vue {
     private async fetchWeatherForecasts() {
         const dt = new Date();
         const mydate = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
-        this.events.push(new Events(0, 'test', mydate, 'tll', 'det'));
-        this.events.push(new Events(1, 'test2', mydate, 'par', 'det'));
+        this.events.push(new Events(0, 'test', dt, 'tll', 'det'));
+        this.events.push(new Events(1, 'test2', dt, 'par', 'det'));
         try {
             const response = await axios.get<Events[]>('api/Events');
             this.events = response.data;

@@ -8,7 +8,7 @@
       </v-col>
           <v-col>
         <span class="" tile>
-          {{eventitem["date"]}}
+          {{eventitem.date | date}}
         </span>
       </v-col>
           <v-col>
@@ -28,22 +28,14 @@ export default {
   props: {
     eventitem: Object,
   },
-    data () {
-    return {
-        message: 'Hello'
-    }
-  },
   computed: {
-    // a computed getter
-    routemsg: function () {
-    //alert(this.eventitem.id)
-      return "/uritus/"+this.eventitem.id.toString();
+    routemsg: function() {
+        return '/uritus/' + this.eventitem.id.toString();
     },
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     div {
     margin:0px;
