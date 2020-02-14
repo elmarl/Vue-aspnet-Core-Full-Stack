@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import EditEvent from './views/EditEvent.vue';
+import AddEvent from './views/AddEvent.vue';
 
 Vue.use(Router);
 
@@ -20,7 +21,7 @@ export default new Router({
         component: EditEvent,
     },
     {
-        path: '/LisaUritus',
+        path: '/lisauritus',
         name: 'add_event',
         component: AddEvent,
     },

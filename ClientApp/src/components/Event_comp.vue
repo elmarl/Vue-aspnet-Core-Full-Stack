@@ -7,9 +7,9 @@
         </span>
       </v-col>
           <v-col>
-        <span class="" tile>
-          {{eventitem.date | date}}
-        </span>
+              <span class="" tile>
+                  {{formatdate}}
+              </span>
       </v-col>
           <v-col>
               <router-link :to="routemsg" tag="button">Osav6tjad</router-link>
@@ -31,7 +31,18 @@ export default {
   computed: {
     routemsg: function() {
         return '/uritus/' + this.eventitem.id.toString();
-    },
+     },
+      formatdate: function () {
+            let today = this.eventitem.date;
+            let dd = today.getDate();
+            let mm = today.getMonth()+1; 
+            let yyyy = today.getFullYear();
+            if(dd<10) 
+            {dd='0'+dd;} 
+            if(mm<10) 
+            {mm='0'+mm;} 
+            return mm+'-'+dd+'-'+yyyy;
+      }
   },
 };
 </script>
