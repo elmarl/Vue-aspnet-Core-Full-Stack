@@ -32,17 +32,17 @@ export default {
     routemsg: function() {
         return '/uritus/' + this.eventitem.id.toString();
      },
-      formatdate: function () {
-            let today = this.eventitem.date;
+      formatdate: function() {
+            const today = this.eventitem.date;
             let dd = today.getDate();
-            let mm = today.getMonth()+1; 
-            let yyyy = today.getFullYear();
-            if(dd<10) 
-            {dd='0'+dd;} 
-            if(mm<10) 
-            {mm='0'+mm;} 
-            return mm+'-'+dd+'-'+yyyy;
-      }
+            let mm = today.getMonth() + 1;
+            const yyyy = today.getFullYear();
+            if (dd < 10) 
+            {dd = '0' + dd; }
+            if (mm < 10) 
+            {mm = '0' + mm; }
+            return mm + '-' + dd + '-' + yyyy;
+      },
   },
 };
 </script>

@@ -51,7 +51,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-// import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 import Event_comp from '@/components/Event_comp.vue';
 import { Events } from '../models/Events';
 import axios from 'axios';
