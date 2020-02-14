@@ -37,7 +37,7 @@ export default {
     // a computed getter
     routemsg: function () {
     //alert(this.eventitem.id)
-      return "/"+this.eventitem.id.toString();
+      return "/uritus/"+this.eventitem.id.toString();
     },
   },
 };

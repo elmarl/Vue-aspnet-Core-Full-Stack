@@ -14,11 +14,11 @@ export default new Router({
         name: 'home',
         component: Home,
     },
-    //{
-    //    path: '/:id',
-    //    name: 'edit_event',
-    //    component: EditEvent,
-    //},
+    {
+        path: '/uritus/:id',
+        name: 'edit_event',
+        component: EditEvent,
+    },
     {
         path: '/counter',
         name: 'counter',
