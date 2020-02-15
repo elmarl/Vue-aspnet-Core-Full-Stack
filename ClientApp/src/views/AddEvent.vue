@@ -28,7 +28,7 @@
                 <div class="form-group row">
                     <label class="control-label col-sm-2" for="details">Lisainfo</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="details" name="details" style="border-style:ridge" v-on:keydown.enter.prevent="">
+                        <textarea type="text" class="form-control" id="details" name="details" style="border-style:ridge" v-on:keydown.enter.prevent=""></textarea>
                     </div>
                 </div>
                 <div class="form-group row">

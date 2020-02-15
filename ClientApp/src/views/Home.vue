@@ -35,9 +35,6 @@
                         <div v-bind:key="i.id" v-for="i in events">
                             <Event_comp :eventitem="i" v-on:del_item="del_item" v-on:edit_item="edit_item"/>
                         </div>
-                        
-                        
-
                     </v-card>
                 </v-col>
                 <v-col cols="6">
