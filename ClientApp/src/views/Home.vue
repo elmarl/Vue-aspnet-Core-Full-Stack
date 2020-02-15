@@ -75,9 +75,9 @@ export default class Home extends Vue {
         try {
             const response = await axios.get<Event[]>('api/Events');
             const res = response.data;
-           
             for (let i = 0; i < res.length; i++) {
-                this.events.push(new Event(res[i].id, res[i].eventName, res[i].eventDate, res[i].location, res[i].details));
+                this.events.push(new Event(res[i].id, res[i].eventName,
+                    res[i].eventDate, res[i].location, res[i].details));
             }
         } catch (e) {
             this.showError = true;
@@ -86,14 +86,14 @@ export default class Home extends Vue {
         this.loading = false;
     }
     private async del_item(id: number) {
-        //delete on front end
+        // delete on front end
         const index: number = this.events.findIndex((x) => x.id === id);
         this.events.splice(index, 1);
-        //delete on back end using path: 'api/Events/{id}
+        // delete on back end using path: 'api/Events/{id}
         try {
-            let path: string = 'api/Events/';
-            let url: string = path.concat(id.toString());
-            const response = await axios.delete(url); //axios.get<Events[]>('api/Events');
+            const path: string = 'api/Events/';
+            const url: string = path.concat(id.toString());
+            const response = await axios.delete(url); // axios.get<Events[]>('api/Events');
             // this.events = response.data;
         } catch (e) {
             this.showError = true;

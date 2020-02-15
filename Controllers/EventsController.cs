@@ -61,7 +61,6 @@ namespace AspNetCoreVueStarter.Controllers
                 return NotFound();
             }
             return await _context.EventModel.ToListAsync();
-            //return ml.ToArray();
         }
 
         // GET: api/Events/5
@@ -69,13 +68,22 @@ namespace AspNetCoreVueStarter.Controllers
         public async Task<ActionResult<EventModel>> GetEventModel(int id)
         {
             var eventModel = await _context.EventModel.FindAsync(id);
-
             if (eventModel == null)
             {
                 return NotFound();
             }
-
             return eventModel;
+        }
+        [HttpPost("{id}/Participants")]
+        public async Task<ActionResult<EventModel>> PostParticipantModel(ParticipantModel pModel)
+        {
+            if (ModelState.IsValid)
+            {
+               // _context.EventModel.Add(eventModel);
+               // await _context.SaveChangesAsync();
+            }
+            //return CreatedAtAction("GetEventModel", new { id = eventModel.Id }, eventModel);
+            return Ok(pModel);
         }
 
         // PUT: api/Events/5

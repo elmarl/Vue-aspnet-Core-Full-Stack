@@ -23,6 +23,10 @@
                 <span class="col">{{eventitem.details}}</span>
             </div>
         </div>
+        <h2 class="container">Osalejad</h2>
+        <div v-bind:key="i.id" v-for="i in participantlist" class="container col-sm-2">
+            <router-link id="routerbtn" :to="formatroute(i.id)" tag="button" class="col">{{i.firstname}}</router-link>
+        </div>
         <h2 class="container">Osaleja lisamine</h2>
         <!--Choose either to fill in a form for individuals or for companies-->
         <div class="container col-sm-2 offset-sm-6">
@@ -47,8 +51,8 @@
                     <input id="idcode" type="text" name="idcode" class="col">
                 </div>
                 <div class="row">
-                    <span for="paymentmethod" class="col">Maksmisviis</span>
-                    <select id="paymentmethod" class="col" name="paymentmethod"><option>Sularaha</option><option>Pangaulekanne</option></select>
+                    <span for="personpaymentmethod" class="col">Maksmisviis</span>
+                    <select id="personpaymentmethod" class="col" name="personpaymentmethod"><option>Sularaha</option><option>Pangaulekanne</option></select>
                 </div>
                 <div class="row">
                     <span for="details" class="col">Lisainfo</span>
@@ -68,16 +72,16 @@
                     <input id="name" type="text" name="firstname" class="col">
                 </div>
                 <div class="row">
-                    <span for="idcode" class="col">Registrikood</span>
-                    <input id="idcode" type="text" name="familyname" class="col">
+                    <span for="entityidcode" class="col">Registrikood</span>
+                    <input id="entityidcode" type="text" name="entityidcode" class="col">
                 </div>
                 <div class="row">
                     <span for="numparticipants" class="col">Osalejate arv</span>
-                    <input id="numparticipants" type="text" name="idcode" class="col">
+                    <input id="numparticipants" type="text" name="numparticipants" class="col">
                 </div>
                 <div class="row">
-                    <span for="paymentmethod" class="col">Maksmisviis</span>
-                    <select id="paymentmethod" class="col" name="paymentmethod"><option>Sularaha</option><option>Pangaulekanne</option></select>
+                    <span for="entitypaymentmethod" class="col">Maksmisviis</span>
+                    <select id="entitypaymentmethod" class="col" name="entitypaymentmethod"><option>Sularaha</option><option>Pangaulekanne</option></select>
                 </div>
                 <div class="row">
                     <span for="entitydetails" class="col">Lisainfo</span>
@@ -95,22 +99,38 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Event } from '../models/Event';
+import { Participant } from '../models/Participant';
 import axios from 'axios';
 @Component({})
 export default class Home extends Vue {
 private eventitem!: Event;
+private participantlist: Participant[] = [];
 private async created() {
+        this.participantlist.push(new Participant(5,'nimi','s','123',3,'card','det','person',3));
         await this.fetchEvent();
-  }
+        await this.fetchParticipants();
+    }
+// Database query
 private async fetchEvent() {
     const dt = new Date();
-    this.eventitem = new Event(0, 'test', dt.toISOString(), 'tll', 'det');
+    // this.eventitem = new Event(0, 'test', dt.toISOString(), 'tll', 'det');
     try {
-        const response = await axios.get<Event[]>('api/Events/1');
+        const response = await axios.get<Event>('api/Events/1');
         const res = response.data;
-           
+        //for (let i = 0; i < res.length; i++) {
+            this.eventitem = new Event(res.id, res.eventName, res.eventDate, res.location, res.details);
+        //}
+    } catch (e) {
+        alert("failed fetch")
+    }
+}
+private async fetchParticipants() {
+    try {
+        const response = await axios.get<Participant[]>('api/Events/' + this.eventitem.id + '/Participants');
+        const res = response.data;
         for (let i = 0; i < res.length; i++) {
-            this.eventitem = new Event(res[i].id, res[i].eventName, res[i].eventDate, res[i].location, res[i].details);
+            this.participantlist.push(new Participant(res[i].id, res[i].firstname, res[i].familyname,
+                res[i].idcode, res[i].numparticipants, res[i].paymentmethod, res[i].details, res[i].ptype, res[i].fkey));
         }
     } catch (e) {
     }
@@ -130,19 +150,52 @@ private formatdate(): string {
     }
     return mm + '-' + dd + '-' + yyyy;
 }
-// submit person form
-private submitperson(): void {
-    alert('ha');
+private formatroute(participant: number): string {
+    return '/uritus/' + this.eventitem.id.toString() + '/osaleja/' + participant;
 }
-// submit entity (business, corporation ...) form
-private submitentity(): void {
+// submit person form
+private async submitperson() {
     alert('ha');
+    // ignore id when posting a new event, using undefined
+    const firstnameinput = (document.getElementById('firstname') as HTMLInputElement).value;
+    const familynameinput = (document.getElementById('familyname') as HTMLInputElement).value;
+    const idcodeinput = (document.getElementById('idcode') as HTMLInputElement).value;
+    const paymentmethodinput = (document.getElementById('entitypaymentmethod') as HTMLSelectElement).value;
+    const detailsinput = (document.getElementById('details') as HTMLInputElement).value;
+    const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
+        paymentmethodinput, detailsinput, 'person', this.eventitem.id);
+    try {
+        const result: any = axios.post('api/Events/' + this.eventitem.id + '/Participants', inputperson);
+    } catch (e) {
+        alert('error posting data');
+    }
+    this.$router.push('/');
+}
+
+// submit entity (business, corporation ...) form
+private async submitentity() {
+    alert('ha');
+    // ignore id when posting a new event, using undefined
+    const nameinput = (document.getElementById('name') as HTMLInputElement).value;
+    const numparticipants = parseInt((document.getElementById('numparticipants') as HTMLInputElement).value, 10);
+    const idcodeinput = (document.getElementById('entityidcode') as HTMLInputElement).value;
+    const paymentmethodinput = (document.getElementById('personpaymentmethod') as HTMLSelectElement).value;
+    const detailsinput = (document.getElementById('entitydetails') as HTMLInputElement).value;
+    const inputcompany = new Participant(0, nameinput, '', idcodeinput, numparticipants,
+        paymentmethodinput, detailsinput, 'company', this.eventitem.id);
+    try {
+        const result: any = axios.post('api/Events/' + this.eventitem.id + '/Participants', inputcompany);
+    }
+    catch (e) {
+        alert('error posting data');
+    }
+    this.$router.push('/');
 }
 // toggle between the two forms using vanilla js
 private toggleform(form: string): void {
-    (<HTMLFormElement>document.getElementById('personform')).style.display = "none"; 
-    (<HTMLFormElement>document.getElementById('entityform')).style.display = "none"; 
-    (<HTMLFormElement>document.getElementById(form)).style.display = "block"; 
+    (document.getElementById('personform') as HTMLFormElement).style.display = 'none';
+    (document.getElementById('entityform') as HTMLFormElement).style.display = 'none';
+    (document.getElementById(form) as HTMLFormElement).style.display = 'block';
     }
 }
 </script>

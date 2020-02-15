@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import EditEvent from './views/EditEvent.vue';
 import AddEvent from './views/AddEvent.vue';
+import EditParticipant from './views/EditParticipant.vue';
 
 Vue.use(Router);
 
@@ -19,6 +20,11 @@ export default new Router({
         path: '/uritus/:id',
         name: 'edit_event',
         component: EditEvent,
+    },
+    {
+        path: '/uritus/:id/osaleja/:oid',
+        name: 'edit_participant',
+        component: EditParticipant,
     },
     {
         path: '/lisauritus',
