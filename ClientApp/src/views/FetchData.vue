@@ -80,7 +80,6 @@ export default class FetchDataView extends Vue {
     try {
       const response = await axios.get<Forecast[]>('api/WeatherForecast');
       this.forecasts = response.data;
-      alert(this.forecasts.toString());
     } catch (e) {
       this.showError = true;
       this.errorMessage = `Error while loading weather forecast: ${e.message}.`;

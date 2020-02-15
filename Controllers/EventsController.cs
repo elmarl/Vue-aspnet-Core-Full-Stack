@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreVueStarter.Data;
 using AspNetCoreVueStarter.Models;
+using System.Collections;
 
 namespace AspNetCoreVueStarter.Controllers
 {
@@ -26,40 +27,41 @@ namespace AspNetCoreVueStarter.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventModel>>> GetEventModel()
         {
-            EventModel ev1 = new EventModel()
-            {
-                Id = 0,
-                EventName = "test",
-                EventDate = DateTime.Now,
-                Location = "testloc",
-                Details = "testdet",
-            };
-            EventModel ev2 = new EventModel()
-            {
-                Id = 1,
-                EventName = "test",
-                EventDate = DateTime.Now,
-                Location = "testloc",
-                Details = "testdet",
-            };
-            EventModel ev3 = new EventModel()
-            {
-                Id = 1,
-                EventName = "testtest",
-                EventDate = DateTime.Now,
-                Location = "testloc",
-                Details = "testdet",
-            };
-            List<EventModel> ml = new List<EventModel>();
-            ml.Add(ev1);
-            ml.Add(ev2);
-            ml.Add(ev3);
-            //if (_context.EventModel == null)
+            //EventModel ev1 = new EventModel()
             //{
-            //    return NotFound();
-            //}
-            //return await _context.EventModel.ToListAsync();
-            return ml.ToArray();
+            //    Id = 0,
+            //    EventName = "test",
+            //    EventDate = DateTime.Now,
+            //    Location = "testloc",
+            //    Details = "testdet",
+            //};
+            //EventModel ev2 = new EventModel()
+            //{
+            //    Id = 1,
+            //    EventName = "test",
+            //    EventDate = DateTime.Now,
+            //    Location = "testloc",
+            //    Details = "testdet",
+            //};
+            //EventModel ev3 = new EventModel()
+            //{
+            //    Id = 1,
+            //    EventName = "testtest",
+            //    EventDate = DateTime.Now,
+            //    Location = "testloc",
+            //    Details = "testdet",
+            //};
+            //IEnumerable en;
+            //List<EventModel> ml = new List<EventModel>();
+            //ml.Add(ev1);
+            //ml.Add(ev2);
+            //ml.Add(ev3);
+            if (_context.EventModel == null)
+            {
+                return NotFound();
+            }
+            return await _context.EventModel.ToListAsync();
+            //return ml.ToArray();
         }
 
         // GET: api/Events/5

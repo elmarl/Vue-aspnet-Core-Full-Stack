@@ -65,19 +65,20 @@
         }
         public submit(): void {
             alert("form entered");
-           /* const nameinput = document.getElementById('name').value;
+            const nameinput = document.getElementById('name').value;
             const dateinput = document.getElementById('date').value;
             const locationinput = document.getElementById('location').value;
-            const detailsinput = document.getElementById('details').value; */
+            const detailsinput = document.getElementById('details').value; 
             //ignore id when posting a new event, using undefined
-          /*  const inputevent: Event = new Event(undefined, nameinput, dateinput, locationinput, detailsinput);
+            const inputevent: Event = new Event(undefined, nameinput, dateinput, locationinput, detailsinput);
+            var msg = JSON.stringify(inputevent);
             try {
-                const result: any = axios.post('api/Event/AddEvent', inputevent);
+                const result: any = axios.post('api/Events', inputevent);
             }
             catch(e) {
                 alert('error posting data');
             }
-            this.$router.push("/");*/
+            this.$router.push("/");
         }
     }
 </script>

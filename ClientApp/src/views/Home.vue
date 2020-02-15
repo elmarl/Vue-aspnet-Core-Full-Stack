@@ -62,7 +62,7 @@ import axios from 'axios';
 })
 
 export default class Home extends Vue {
-    private events: Event[] = [];
+    private events: object[] = [];
     private errorMessage: string = 'Error while loading event data.';
     private showError: boolean = false;
     private loading: boolean = true;
@@ -71,17 +71,21 @@ export default class Home extends Vue {
         alert("loaded");
         await this.fetchEvents();
   }
+    private getdata() {
 
+    }
     private async fetchEvents() {
-        const dt = new Date();
+       /* const dt = new Date();
         const mydate = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
-      //  this.events.push(new Event(0, 'test', dt.toISOString(), 'tll', 'det'));
-      //  this.events.push(new Event(1, 'test2', dt.toISOString(), 'par', 'det')); 
+        this.events.push(new Event(0, 'test', dt.toISOString(), 'tll', 'det'));
+        this.events.push(new Event(1, 'test2', dt.toISOString(), 'par', 'det')); */
         try {
             const response = await axios.get<Event[]>('api/Events');
-            // response.data; //
-            this.events = [new Event(0, 'test', '2020-02-15T02:13:16.342165+02:00', 'testloc', 'testdet'),
-            new Event(1, 'test88', '2020-02-15T02:13:16.3422123+02:00', 'testloc', 'testdet')];
+            const res = response.data;
+           
+            for (let i = 0; i < res.length; i++) {
+                this.events.push(new Event(res[i].id, res[i].eventName, res[i].eventDate, res[i].location, res[i].details));
+            }
         } catch (e) {
             this.showError = true;
             this.errorMessage = `Error while loading events: ${e.message}.`;
