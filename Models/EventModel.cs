@@ -24,7 +24,7 @@ namespace AspNetCoreVueStarter.Models
         [StringLength(50, ErrorMessage = "Maksimaalselt 50 tähemärki")]
         public string Location { get; set; }
         [Display(Name = "Lisainfo")]
-        [StringLength(50, ErrorMessage = "Maksimaalselt 50 tähemärki")]
+        [StringLength(1500, ErrorMessage = "Maksimaalselt 1500 tähemärki")]
         public string Details { get; set; }
     }
 }

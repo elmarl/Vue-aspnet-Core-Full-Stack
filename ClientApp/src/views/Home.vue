@@ -62,23 +62,19 @@ import axios from 'axios';
 })
 
 export default class Home extends Vue {
-    private events: object[] = [];
+    private events: Event[] = [];
     private errorMessage: string = 'Error while loading event data.';
     private showError: boolean = false;
     private loading: boolean = true;
 
     private async created() {
-        alert("loaded");
         await this.fetchEvents();
   }
-    private getdata() {
-
-    }
     private async fetchEvents() {
-       /* const dt = new Date();
+        const dt = new Date();
         const mydate = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
         this.events.push(new Event(0, 'test', dt.toISOString(), 'tll', 'det'));
-        this.events.push(new Event(1, 'test2', dt.toISOString(), 'par', 'det')); */
+        this.events.push(new Event(1, 'test2', dt.toISOString(), 'par', 'det')); 
         try {
             const response = await axios.get<Event[]>('api/Events');
             const res = response.data;
