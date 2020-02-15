@@ -19,6 +19,7 @@ namespace AspNetCoreVueStarter.Controllers
         public EventsController(DataContext context)
         {
             _context = context;
+            _context.Database.EnsureCreated();
         }
 
         // GET: api/Events
@@ -41,9 +42,18 @@ namespace AspNetCoreVueStarter.Controllers
                 Location = "testloc",
                 Details = "testdet",
             };
+            EventModel ev3 = new EventModel()
+            {
+                Id = 1,
+                EventName = "testtest",
+                EventDate = DateTime.Now,
+                Location = "testloc",
+                Details = "testdet",
+            };
             List<EventModel> ml = new List<EventModel>();
             ml.Add(ev1);
             ml.Add(ev2);
+            ml.Add(ev3);
             //if (_context.EventModel == null)
             //{
             //    return NotFound();

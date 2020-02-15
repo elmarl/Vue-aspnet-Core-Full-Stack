@@ -3,7 +3,7 @@
       <v-row class="" no-gutters>
       <v-col>
         <span class="" tile>
-            {{eventitem["name"]}}
+            {{eventitem["eventName"]}}
         </span>
       </v-col>
           <v-col>
@@ -33,7 +33,7 @@ export default {
         return '/uritus/' + this.eventitem.id.toString();
      },
       formatdate: function() {
-            const today = this.eventitem.date;
+            const today = new Date(this.eventitem.eventDate);
             let dd = today.getDate();
             let mm = today.getMonth() + 1;
             const yyyy = today.getFullYear();

@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\models\Events.ts" />
+    <None Remove="ClientApp\src\models\Event.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,7 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\models\Events.ts" />
+    <TypeScriptCompile Include="ClientApp\src\models\Event.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

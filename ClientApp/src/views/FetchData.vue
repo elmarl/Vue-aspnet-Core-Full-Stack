@@ -71,7 +71,8 @@ export default class FetchDataView extends Vue {
       return 'red';
     }
   }
-  private async created() {
+    private async created() {
+        alert("here");
     await this.fetchWeatherForecasts();
   }
 
