@@ -68,10 +68,10 @@ export default class Home extends Vue {
         await this.fetchEvents();
   }
     private async fetchEvents() {
-        const dt = new Date();
-        const mydate = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
-        this.events.push(new Event(0, 'test', dt.toISOString(), 'tll', 'det'));
-        this.events.push(new Event(1, 'test2', dt.toISOString(), 'par', 'det')); 
+        // const dt = new Date();
+        // const mydate = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
+        // this.events.push(new Event(0, 'test', dt.toISOString(), 'tll', 'det'));
+        // this.events.push(new Event(1, 'test2', dt.toISOString(), 'par', 'det')); 
         try {
             const response = await axios.get<Event[]>('api/Events');
             const res = response.data;

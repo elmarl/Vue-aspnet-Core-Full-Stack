@@ -75,7 +75,7 @@ namespace AspNetCoreVueStarter.Controllers
             return eventModel;
         }
         [HttpPost("{id}/Participants")]
-        public async Task<ActionResult<EventModel>> PostParticipantModel(ParticipantModel pModel)
+        public async Task<ActionResult<ParticipantModel>> PostParticipantModel(ParticipantModel pModel)
         {
             if (ModelState.IsValid)
             {

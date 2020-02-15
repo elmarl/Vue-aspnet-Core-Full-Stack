@@ -103,7 +103,7 @@ import { Participant } from '../models/Participant';
 import axios from 'axios';
 @Component({})
 export default class Home extends Vue {
-private eventitem!: Event;
+private eventitem: Event = new Event(0, '', '', '', '');
 private participantlist: Participant[] = [];
 private async created() {
         this.participantlist.push(new Participant(5,'nimi','s','123',3,'card','det','person',3));
@@ -112,13 +112,16 @@ private async created() {
     }
 // Database query
 private async fetchEvent() {
-    const dt = new Date();
+    // const dt = new Date();
     // this.eventitem = new Event(0, 'test', dt.toISOString(), 'tll', 'det');
     try {
-        const response = await axios.get<Event>('api/Events/1');
+        const eventid = window.location.href.split('/').slice(-1)[0];
+        const response = await axios.get<Event>('https://localhost:5001/api/Events/' + eventid);
+        
         const res = response.data;
         //for (let i = 0; i < res.length; i++) {
-            this.eventitem = new Event(res.id, res.eventName, res.eventDate, res.location, res.details);
+        this.eventitem = new Event(res.id, res.eventName, res.eventDate, res.location, res.details);
+        // alert(this.eventitem.eventName);
         //}
     } catch (e) {
         alert("failed fetch")
@@ -165,7 +168,7 @@ private async submitperson() {
     const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
         paymentmethodinput, detailsinput, 'person', this.eventitem.id);
     try {
-        const result: any = axios.post('api/Events/' + this.eventitem.id + '/Participants', inputperson);
+        const result: any = await axios.post('api/Events/' + this.eventitem.id + '/Participants', inputperson);
     } catch (e) {
         alert('error posting data');
     }
