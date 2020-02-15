@@ -73,13 +73,15 @@ export default class Home extends Vue {
   }
 
     private async fetchEvents() {
-       /* const dt = new Date();
+        const dt = new Date();
         const mydate = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
-        this.events.push(new Event(0, 'test', dt, 'tll', 'det'));
-        this.events.push(new Event(1, 'test2', dt, 'par', 'det')); */
+      //  this.events.push(new Event(0, 'test', dt.toISOString(), 'tll', 'det'));
+      //  this.events.push(new Event(1, 'test2', dt.toISOString(), 'par', 'det')); 
         try {
             const response = await axios.get<Event[]>('api/Events');
-            this.events = response.data; //[{"id":0,"eventName":"test","eventDate":"2020-02-15T02:13:16.342165+02:00","location":"testloc","details":"testdet"},{"id":1,"eventName":"test","eventDate":"2020-02-15T02:13:16.3422123+02:00","location":"testloc","details":"testdet"},{"id":1,"eventName":"testtest","eventDate":"2020-02-15T02:13:16.342214+02:00","location":"testloc","details":"testdet"}] 
+            // response.data; //
+            this.events = [new Event(0, 'test', '2020-02-15T02:13:16.342165+02:00', 'testloc', 'testdet'),
+            new Event(1, 'test88', '2020-02-15T02:13:16.3422123+02:00', 'testloc', 'testdet')];
         } catch (e) {
             this.showError = true;
             this.errorMessage = `Error while loading events: ${e.message}.`;
