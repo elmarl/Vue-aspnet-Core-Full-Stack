@@ -16,7 +16,8 @@ namespace AspNetCoreVueStarter.Data
         {
         }
 
-        public DbSet<AspNetCoreVueStarter.Models.EventModel> EventModel { get; set; }
+        public DbSet<AspNetCoreVueStarter.Models.EventsModel> EventModel { get; set; }
+        public DbSet<AspNetCoreVueStarter.Models.ParticipantModel> ParticipantModel { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

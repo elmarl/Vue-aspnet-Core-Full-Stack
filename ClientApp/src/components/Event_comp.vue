@@ -16,7 +16,7 @@
         <!--<v-btn @click="$emit('edit_item', eventitem['id'])" to=eventitem["id"] depressed small>Osav6tjad</v-btn>-->
       </v-col>
           <v-col>
-        <v-btn @click="$emit('del_item', eventitem['id'])" depressed small>delete</v-btn>
+        <v-btn @click="$emit('del_item', eventitem['eventid'])" depressed small>delete</v-btn>
       </v-col>
     </v-row>
   </div>
@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     routemsg: function() {
-        return '/uritus/' + this.eventitem.id.toString();
+        return '/uritus/' + this.eventitem.eventid.toString();
      },
       formatdate: function() {
             const today = new Date(this.eventitem.eventDate);

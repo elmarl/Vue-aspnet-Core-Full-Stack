@@ -112,32 +112,64 @@ private async created() {
     }
 // Database query
 private async fetchEvent() {
-    // const dt = new Date();
-    // this.eventitem = new Event(0, 'test', dt.toISOString(), 'tll', 'det');
     try {
         const eventid = window.location.href.split('/').slice(-1)[0];
         const response = await axios.get<Event>('https://localhost:5001/api/Events/' + eventid);
-        
         const res = response.data;
-        //for (let i = 0; i < res.length; i++) {
-        this.eventitem = new Event(res.id, res.eventName, res.eventDate, res.location, res.details);
-        // alert(this.eventitem.eventName);
-        //}
+        this.eventitem = new Event(res.eventid, res.eventName, res.eventDate, res.location, res.details);
     } catch (e) {
         alert("failed fetch")
     }
 }
 private async fetchParticipants() {
     try {
-        const response = await axios.get<Participant[]>('api/Events/' + this.eventitem.id + '/Participants');
+        const response = await axios.get<Participant[]>('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants');
         const res = response.data;
         for (let i = 0; i < res.length; i++) {
-            this.participantlist.push(new Participant(res[i].id, res[i].firstname, res[i].familyname,
-                res[i].idcode, res[i].numparticipants, res[i].paymentmethod, res[i].details, res[i].ptype, res[i].fkey));
+            this.participantlist.push(new Participant(res[i].participantid, res[i].firstname, res[i].familyname,
+                res[i].idcode, res[i].numparticipants, res[i].paymentmethod, res[i].details, res[i].participantType, res[i].eventid));
         }
     } catch (e) {
     }
 }
+// submit person form
+private async submitperson() {
+    alert('ha');
+    // ignore id when posting a new event, using undefined
+    const firstnameinput = (document.getElementById('firstname') as HTMLInputElement).value;
+    const familynameinput = (document.getElementById('familyname') as HTMLInputElement).value;
+    const idcodeinput = (document.getElementById('idcode') as HTMLInputElement).value;
+    const paymentmethodinput = (document.getElementById('entitypaymentmethod') as HTMLSelectElement).value;
+    const detailsinput = (document.getElementById('details') as HTMLInputElement).value;
+    const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
+        paymentmethodinput, detailsinput, 'person', this.eventitem.eventid);
+    try {
+        const result: any = await axios.post('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants', inputperson);
+    } catch (e) {
+        alert('error posting data');
+    }
+    this.$router.push('/');
+}
+// submit entity (business, corporation ...) form
+private async submitentity() {
+    alert('ha');
+    // ignore id when posting a new event, using undefined
+    const nameinput = (document.getElementById('name') as HTMLInputElement).value;
+    const numparticipants = parseInt((document.getElementById('numparticipants') as HTMLInputElement).value, 10);
+    const idcodeinput = (document.getElementById('entityidcode') as HTMLInputElement).value;
+    const paymentmethodinput = (document.getElementById('personpaymentmethod') as HTMLSelectElement).value;
+    const detailsinput = (document.getElementById('entitydetails') as HTMLInputElement).value;
+    const inputcompany = new Participant(0, nameinput, '', idcodeinput, numparticipants,
+        paymentmethodinput, detailsinput, 'company', this.eventitem.eventid);
+    try {
+        const result: any = axios.post('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants', inputcompany);
+    }
+    catch (e) {
+        alert('error posting data');
+    }
+    this.$router.push('/');
+}
+// format date to human readable form
 private formatdate(): string {
     const today = new Date(this.eventitem.eventDate);
     let dd: string = today.getDate().toString();
@@ -153,46 +185,9 @@ private formatdate(): string {
     }
     return mm + '-' + dd + '-' + yyyy;
 }
+// format route path for participant details
 private formatroute(participant: number): string {
-    return '/uritus/' + this.eventitem.id.toString() + '/osaleja/' + participant;
-}
-// submit person form
-private async submitperson() {
-    alert('ha');
-    // ignore id when posting a new event, using undefined
-    const firstnameinput = (document.getElementById('firstname') as HTMLInputElement).value;
-    const familynameinput = (document.getElementById('familyname') as HTMLInputElement).value;
-    const idcodeinput = (document.getElementById('idcode') as HTMLInputElement).value;
-    const paymentmethodinput = (document.getElementById('entitypaymentmethod') as HTMLSelectElement).value;
-    const detailsinput = (document.getElementById('details') as HTMLInputElement).value;
-    const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
-        paymentmethodinput, detailsinput, 'person', this.eventitem.id);
-    try {
-        const result: any = await axios.post('api/Events/' + this.eventitem.id + '/Participants', inputperson);
-    } catch (e) {
-        alert('error posting data');
-    }
-    this.$router.push('/');
-}
-
-// submit entity (business, corporation ...) form
-private async submitentity() {
-    alert('ha');
-    // ignore id when posting a new event, using undefined
-    const nameinput = (document.getElementById('name') as HTMLInputElement).value;
-    const numparticipants = parseInt((document.getElementById('numparticipants') as HTMLInputElement).value, 10);
-    const idcodeinput = (document.getElementById('entityidcode') as HTMLInputElement).value;
-    const paymentmethodinput = (document.getElementById('personpaymentmethod') as HTMLSelectElement).value;
-    const detailsinput = (document.getElementById('entitydetails') as HTMLInputElement).value;
-    const inputcompany = new Participant(0, nameinput, '', idcodeinput, numparticipants,
-        paymentmethodinput, detailsinput, 'company', this.eventitem.id);
-    try {
-        const result: any = axios.post('api/Events/' + this.eventitem.id + '/Participants', inputcompany);
-    }
-    catch (e) {
-        alert('error posting data');
-    }
-    this.$router.push('/');
+    return '/uritus/' + this.eventitem.eventid.toString() + '/osaleja/' + participant;
 }
 // toggle between the two forms using vanilla js
 private toggleform(form: string): void {

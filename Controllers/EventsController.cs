@@ -25,7 +25,7 @@ namespace AspNetCoreVueStarter.Controllers
 
         // GET: api/Events
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EventModel>>> GetEventModel()
+        public async Task<ActionResult<IEnumerable<EventsModel>>> GetEventModel()
         {
             //EventModel ev1 = new EventModel()
             //{
@@ -65,7 +65,7 @@ namespace AspNetCoreVueStarter.Controllers
 
         // GET: api/Events/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<EventModel>> GetEventModel(int id)
+        public async Task<ActionResult<EventsModel>> GetEventModel(int id)
         {
             var eventModel = await _context.EventModel.FindAsync(id);
             if (eventModel == null)
@@ -79,20 +79,32 @@ namespace AspNetCoreVueStarter.Controllers
         {
             if (ModelState.IsValid)
             {
-               // _context.EventModel.Add(eventModel);
-               // await _context.SaveChangesAsync();
+                _context.ParticipantModel.Add(pModel);
+                await _context.SaveChangesAsync();
             }
-            //return CreatedAtAction("GetEventModel", new { id = eventModel.Id }, eventModel);
-            return Ok(pModel);
+            return CreatedAtAction("GetEventModel", new { id = pModel.Participantid }, pModel);
+            // return Ok(pModel);
         }
+        [HttpGet("{id}/Participants")]
+        public ActionResult<IEnumerable<ParticipantModel>> GetParticipantModel(int id)
+        {
+            if (_context.ParticipantModel == null)
+            {
+                return NotFound();
+            }
 
+            //  ObjectSet<EventModel> events = _context.EventModel;
+            //  ObjectSet<ParticipantModel> parts = _context.ParticipantModel;
+            
+            return CreatedAtAction("GetParticipantModel", new { eventid = id });//_context.ParticipantModel.Find(["",""]);
+        }
         // PUT: api/Events/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEventModel(int id, EventModel eventModel)
+        public async Task<IActionResult> PutEventModel(int id, EventsModel eventModel)
         {
-            if (id != eventModel.Id)
+            if (id != eventModel.Eventid)
             {
                 return BadRequest();
             }
@@ -122,19 +134,19 @@ namespace AspNetCoreVueStarter.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<EventModel>> PostEventModel(EventModel eventModel)
+        public async Task<ActionResult<EventsModel>> PostEventModel(EventsModel eventModel)
         {
             if (ModelState.IsValid) 
             { 
                 _context.EventModel.Add(eventModel);
                 await _context.SaveChangesAsync();
             }
-            return CreatedAtAction("GetEventModel", new { id = eventModel.Id }, eventModel);
+            return CreatedAtAction("GetEventModel", new { id = eventModel.Eventid }, eventModel);
         }
 
         // DELETE: api/Events/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<EventModel>> DeleteEventModel(int id)
+        public async Task<ActionResult<EventsModel>> DeleteEventModel(int id)
         {
             var eventModel = await _context.EventModel.FindAsync(id);
             if (eventModel == null)
@@ -150,7 +162,7 @@ namespace AspNetCoreVueStarter.Controllers
 
         private bool EventModelExists(int id)
         {
-            return _context.EventModel.Any(e => e.Id == id);
+            return _context.EventModel.Any(e => e.Eventid == id);
         }
     }
 }

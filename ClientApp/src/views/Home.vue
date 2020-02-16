@@ -76,7 +76,7 @@ export default class Home extends Vue {
             const response = await axios.get<Event[]>('api/Events');
             const res = response.data;
             for (let i = 0; i < res.length; i++) {
-                this.events.push(new Event(res[i].id, res[i].eventName,
+                this.events.push(new Event(res[i].eventid, res[i].eventName,
                     res[i].eventDate, res[i].location, res[i].details));
             }
         } catch (e) {
@@ -87,7 +87,7 @@ export default class Home extends Vue {
     }
     private async del_item(id: number) {
         // delete on front end
-        const index: number = this.events.findIndex((x) => x.id === id);
+        const index: number = this.events.findIndex((x) => x.eventid === id);
         this.events.splice(index, 1);
         // delete on back end using path: 'api/Events/{id}
         try {
