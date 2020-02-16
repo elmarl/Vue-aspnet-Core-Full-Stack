@@ -27,33 +27,7 @@ namespace AspNetCoreVueStarter.Models
         [Display(Name = "Lisainfo")]
         [StringLength(1500, ErrorMessage = "Maksimaalselt 1500 tähemärki")]
         public string Details { get; set; }
-        public ICollection<ParticipantModel> Participants { get; set; }
+        public ICollection<ParticipantModel> Participants { get; set; } = new HashSet<ParticipantModel>();
     }
-    public class ParticipantModel
-    {
-        [Key]
-        public int Participantid { get; set; }
-        [Required]
-        [Column("name")]
-        [StringLength(50, ErrorMessage = "Maksimaalselt 50 tähemärki")]
-        public string Firstname { get; set; }
-        [StringLength(50, ErrorMessage = "Maksimaalselt 50 tähemärki")]
-        public string? Familyname { get; set; }
-        [Required]
-        [Column("code")]
-        [StringLength(50, ErrorMessage = "Maksimaalselt 50 tähemärki")]
-        public string Idcode { get; set; }
-        public int? NumParticipants { get; set; }
-        [Required]
-        public string Paymentmethod { get; set; }
-        [Required]
-        [StringLength(5000, ErrorMessage = "Maksimaalselt 5000 tähemärki")]
-        public string Details { get; set; }
-        [Required]
-        public string ParticipantType { get; set; }
-        [Required]
-        [ForeignKey("EventId")]
-        public int Eventid { get; set; }
-        public EventsModel EventModel { get; set; }
-    }
+    
 }

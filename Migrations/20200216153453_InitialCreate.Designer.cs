@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetCoreVueStarter.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200216005432_InitialCreate")]
+    [Migration("20200216153453_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,10 +62,7 @@ namespace AspNetCoreVueStarter.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasMaxLength(5000);
 
-                    b.Property<int?>("EventModelEventid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Eventid")
+                    b.Property<int>("EventModelEventid")
                         .HasColumnType("int");
 
                     b.Property<string>("Familyname")
@@ -106,7 +103,9 @@ namespace AspNetCoreVueStarter.Migrations
                 {
                     b.HasOne("AspNetCoreVueStarter.Models.EventsModel", "EventModel")
                         .WithMany("Participants")
-                        .HasForeignKey("EventModelEventid");
+                        .HasForeignKey("EventModelEventid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

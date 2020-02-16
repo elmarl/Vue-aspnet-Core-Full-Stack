@@ -42,13 +42,6 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\WeatherForecastController.cs" />
-    <Compile Remove="Migrations\20200216002741_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200216002741_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200216003309_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200216003309_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20200216003838_InitialCreate.cs" />
-    <Compile Remove="Migrations\20200216003838_InitialCreate.Designer.cs" />
-    <Compile Remove="Models\ParticipantModel.cs" />
     <Compile Remove="Models\WeatherForecast.cs" />
   </ItemGroup>
 
@@ -68,6 +61,10 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\models\Event.ts" />
     <TypeScriptCompile Include="ClientApp\src\models\Participant.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

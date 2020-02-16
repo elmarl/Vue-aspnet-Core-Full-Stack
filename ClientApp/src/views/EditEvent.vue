@@ -128,9 +128,10 @@ private async fetchParticipants() {
     try {
         const response = await axios.get<Participant[]>('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants');
         const res = response.data;
+        const myevent: Event = new Event(this.eventitem.eventid, '', '', '', '');
         for (let i = 0; i < res.length; i++) {
             this.participantlist.push(new Participant(res[i].participantid, res[i].firstname, res[i].familyname,
-                res[i].idcode, res[i].numparticipants, res[i].paymentmethod, res[i].details, res[i].participantType, res[i].eventid));
+                res[i].idcode, res[i].numparticipants, res[i].paymentmethod, res[i].details, res[i].participantType, myevent));
         }
     } catch (e) {
         alert("failed fetch")
@@ -145,8 +146,9 @@ private async submitperson() {
     const idcodeinput = (document.getElementById('idcode') as HTMLInputElement).value;
     const paymentmethodinput = (document.getElementById('entitypaymentmethod') as HTMLSelectElement).value;
     const detailsinput = (document.getElementById('details') as HTMLInputElement).value;
+    const myevent: Event = new Event(this.eventitem.eventid, null, null, null, null);
     const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
-        paymentmethodinput, detailsinput, 'person', this.eventitem.eventid);
+        paymentmethodinput, detailsinput, 'person', myevent);
     try {
         const result: any = await axios.post('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants', inputperson);
     } catch (e) {
@@ -163,8 +165,9 @@ private async submitentity() {
     const idcodeinput = (document.getElementById('entityidcode') as HTMLInputElement).value;
     const paymentmethodinput = (document.getElementById('personpaymentmethod') as HTMLSelectElement).value;
     const detailsinput = (document.getElementById('entitydetails') as HTMLInputElement).value;
+    const myevent: Event = new Event(this.eventitem.eventid, '', '', '', '');
     const inputcompany = new Participant(0, nameinput, '', idcodeinput, numparticipants,
-        paymentmethodinput, detailsinput, 'company', this.eventitem.eventid);
+        paymentmethodinput, detailsinput, 'company', myevent);
     try {
         const result: any = axios.post('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants', inputcompany);
     }
@@ -175,7 +178,7 @@ private async submitentity() {
 }
 // format date to human readable form
 private formatdate(): string {
-    const today = new Date(this.eventitem.eventDate);
+    const today = new Date(this.eventitem.eventDate || '');
     let dd: string = today.getDate().toString();
     let mm: string = (today.getMonth() + 1).toString();
     const yyyy = today.getFullYear();

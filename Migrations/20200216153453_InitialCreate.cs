@@ -36,8 +36,7 @@ namespace AspNetCoreVueStarter.Migrations
                     Paymentmethod = table.Column<string>(nullable: false),
                     Details = table.Column<string>(maxLength: 5000, nullable: false),
                     ParticipantType = table.Column<string>(nullable: false),
-                    Eventid = table.Column<int>(nullable: false),
-                    EventModelEventid = table.Column<int>(nullable: true)
+                    EventModelEventid = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,7 +46,7 @@ namespace AspNetCoreVueStarter.Migrations
                         column: x => x.EventModelEventid,
                         principalTable: "EventModel",
                         principalColumn: "Eventid",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

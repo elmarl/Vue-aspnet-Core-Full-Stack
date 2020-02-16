@@ -1,4 +1,5 @@
-﻿export class Participant {
+﻿import { Event } from './Event';
+export class Participant {
     constructor(
         public participantid: number,
         public firstname: string,
@@ -8,6 +9,6 @@
         public paymentmethod: string,
         public details: string,
         public participantType: string,
-        public eventid: number,
+        public event: Event,
     ) { }
 }

@@ -35,9 +35,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
 import { Participant } from '../models/Participant';
+import { Event } from '../models/Event';
 @Component
 export default class EditParticipant extends Vue {
-    private participant: Participant = new Participant(0,'','','',0,'','','',0);
+    private participant: Participant = new Participant(0,'','','',0,'','','', new Event(0, '','','',''));
     private async created() {
     await this.fetchParticipant();
   }

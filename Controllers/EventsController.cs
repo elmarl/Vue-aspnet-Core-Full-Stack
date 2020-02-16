@@ -58,6 +58,7 @@ namespace AspNetCoreVueStarter.Controllers
             //ml.Add(ev3);
             if (_context.EventModel == null)
             {
+                string res = "";
                 return NotFound();
             }
             return await _context.EventModel.ToListAsync();
@@ -75,12 +76,15 @@ namespace AspNetCoreVueStarter.Controllers
             return eventModel;
         }
         [HttpPost("{id}/Participants")]
-        public async Task<ActionResult<ParticipantModel>> PostParticipantModel(ParticipantModel pModel)
+        public async Task<ActionResult<ParticipantModel>> PostParticipantModel(int id, ParticipantModel pModel)
         {
             if(pModel != null) { 
             if (ModelState.IsValid)
             {
-                _context.ParticipantModel.Add(pModel);
+                var eventModel = await _context.EventModel.FindAsync(id);
+                
+                eventModel.Participants.Add(pModel);
+                //_context.EventModel.Update(eventModel);
                 await _context.SaveChangesAsync();
             }
             return CreatedAtAction("GetEventModel", new { id = pModel.Participantid }, pModel);
@@ -97,7 +101,7 @@ namespace AspNetCoreVueStarter.Controllers
                 return NotFound();
             }
             // ASP.NET does not have a synchronization context, no need for configureawait 
-            return await _context.ParticipantModel.Where(a => a.Eventid == id).ToListAsync(); ;
+            return await _context.ParticipantModel.Where(a => a.EventModel.Eventid == id).ToListAsync(); ;
         }
         [HttpGet("{id}/Participants/{pid}")]
         public async Task<ActionResult<ParticipantModel>> GetParticipantModel(int pid)
