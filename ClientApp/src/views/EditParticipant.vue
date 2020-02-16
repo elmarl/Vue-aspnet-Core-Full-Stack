@@ -3,23 +3,26 @@
         <h2 class="container">Osaleja</h2>
         <div id="persondata" style="visibility:hidden" class="container col-sm-6 myrow">
             <div class="row">
-                <span class="col">Urituse nimi</span>
-                <span class="col">{{participant.firstname}}</span>
+                <span class="col">Eesnimi</span>
+                <input class="col" :value="participant.firstname" />
             </div>
             <div class="row">
-                <span class="col">Kuupaev</span>
-                <span class="col">{{participant.familyname}}</span>
+                <span class="col">Perekonnanimi</span>
+                <input class="col" :value="participant.familyname" />
             </div>
             <div class="row">
-                <span class="col">Koht</span>
-                <span class="col">{{participant.paymentmethod}}</span>
+                <span class="col">Isikukood</span>
+                <input class="col" :value="participant.idcode" />
+            </div>
+            <div class="row">
+                <span class="col">Maksmisviis</span>
+                <input class="col" :value="participant.paymentmethod" />
             </div>
             <div class="row">
                 <span class="col">Lisainfo</span>
-                <span class="col">{{participant.details}}</span>
+                <input class="col" :value="participant.details" />
             </div>
             <div class="row">
-                <!--<router-link id="routerbtn" to="/" tag="button" class="col">Tagasi</router-link>-->
                 <a id="routerbtn" class="col" href="javascript:history.go(-1)">Tagasi</a>
                 <input type="submit" class="col" @click.stop.prevent="SaveChanges()">
             </div>
@@ -33,7 +36,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
 import { Participant } from '../models/Participant';
 @Component
-export default class Counter extends Vue {
+export default class EditParticipant extends Vue {
     private participant: Participant = new Participant(0,'','','',0,'','','',0);
     private async created() {
     await this.fetchParticipant();
@@ -56,5 +59,13 @@ export default class Counter extends Vue {
 </script>
 
 <style scoped>
-
+    .myrow > div > span, .myrow > div > input,
+    .myrow > div > select,
+    .myrow > div > #routerbtn {
+        padding-bottom:5px;
+        padding-top:5px;
+    }
+    input, textarea, select {
+        border-style:ridge;
+    }
 </style>

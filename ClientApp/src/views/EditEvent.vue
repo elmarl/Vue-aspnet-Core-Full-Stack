@@ -26,7 +26,8 @@
         <h2 class="container">Osalejad</h2>
         <div v-bind:key="i.id" v-for="i in participantlist" class="container col-sm-2">
             <div>
-                <router-link id="routerbtn" :to="formatroute(i.participantid)" tag="button" class="col">{{i.firstname}}</router-link>
+                <router-link id="routerbtn" :to="formatroute(i.participantid)" tag="button" class="">{{i.firstname}}</router-link>
+                <br />
             </div>
         </div>
         <h2 class="container">Osaleja lisamine</h2>
@@ -104,11 +105,11 @@ import { Event } from '../models/Event';
 import { Participant } from '../models/Participant';
 import axios from 'axios';
 @Component({})
-export default class Home extends Vue {
+export default class EditEvent extends Vue {
 private eventitem: Event = new Event(0, '', '', '', '');
 private participantlist: Participant[] = [];
 private async created() {
-        this.participantlist.push(new Participant(5,'nimi','s','123',3,'card','det','person',3));
+      //  this.participantlist.push(new Participant(5,'nimi','s','123',3,'card','det','person',3));
         await this.fetchEvent();
         await this.fetchParticipants();
     }
