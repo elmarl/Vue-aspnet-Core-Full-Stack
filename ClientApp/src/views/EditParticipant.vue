@@ -18,6 +18,11 @@
                 <span class="col">Lisainfo</span>
                 <span class="col">{{participant.details}}</span>
             </div>
+            <div class="row">
+                <!--<router-link id="routerbtn" to="/" tag="button" class="col">Tagasi</router-link>-->
+                <a id="routerbtn" class="col" href="javascript:history.go(-1)">Tagasi</a>
+                <input type="submit" class="col" @click.stop.prevent="SaveChanges()">
+            </div>
         </div>
      
     </v-container>
@@ -34,15 +39,18 @@ export default class Counter extends Vue {
     await this.fetchParticipant();
   }
 
-  private async fetchParticipant() {
-      try {const eventid = window.location.href.split('/').slice(-3)[0];
-          const participantid = window.location.href.split('/').slice(-1)[0];
-          const response = await axios.get<Participant>('https://localhost:5001/api/Events/' + eventid + '/Participants/' + participantid);
-          this.participant = response.data;
-      } catch (e) {
-          alert("error loading participant");
-      }
-      (document.getElementById('persondata') as HTMLDivElement).style.visibility = 'visible';
+    private async fetchParticipant() {
+        try {const eventid = window.location.href.split('/').slice(-3)[0];
+            const participantid = window.location.href.split('/').slice(-1)[0];
+            const response = await axios.get<Participant>('https://localhost:5001/api/Events/' + eventid + '/Participants/' + participantid);
+            this.participant = response.data;
+        } catch (e) {
+            alert("error loading participant");
+        }
+        (document.getElementById('persondata') as HTMLDivElement).style.visibility = 'visible';
+    }
+    private async saveChanges() {
+
     }
 }
 </script>

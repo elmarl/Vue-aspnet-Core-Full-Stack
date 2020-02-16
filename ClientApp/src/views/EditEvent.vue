@@ -25,7 +25,9 @@
         </div>
         <h2 class="container">Osalejad</h2>
         <div v-bind:key="i.id" v-for="i in participantlist" class="container col-sm-2">
-            <router-link id="routerbtn" :to="formatroute(i.id)" tag="button" class="col">{{i.firstname}}</router-link>
+            <div>
+                <router-link id="routerbtn" :to="formatroute(i.participantid)" tag="button" class="col">{{i.firstname}}</router-link>
+            </div>
         </div>
         <h2 class="container">Osaleja lisamine</h2>
         <!--Choose either to fill in a form for individuals or for companies-->
@@ -110,7 +112,7 @@ private async created() {
         await this.fetchEvent();
         await this.fetchParticipants();
     }
-// Database query
+// Data queries
 private async fetchEvent() {
     try {
         const eventid = window.location.href.split('/').slice(-1)[0];
@@ -130,6 +132,7 @@ private async fetchParticipants() {
                 res[i].idcode, res[i].numparticipants, res[i].paymentmethod, res[i].details, res[i].participantType, res[i].eventid));
         }
     } catch (e) {
+        alert("failed fetch")
     }
 }
 // submit person form

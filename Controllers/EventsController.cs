@@ -77,26 +77,39 @@ namespace AspNetCoreVueStarter.Controllers
         [HttpPost("{id}/Participants")]
         public async Task<ActionResult<ParticipantModel>> PostParticipantModel(ParticipantModel pModel)
         {
+            if(pModel != null) { 
             if (ModelState.IsValid)
             {
                 _context.ParticipantModel.Add(pModel);
                 await _context.SaveChangesAsync();
             }
             return CreatedAtAction("GetEventModel", new { id = pModel.Participantid }, pModel);
-            // return Ok(pModel);
+            }
+            return BadRequest();
         }
         [HttpGet("{id}/Participants")]
-        public ActionResult<IEnumerable<ParticipantModel>> GetParticipantModel(int id)
+        public async Task<ActionResult<IEnumerable<ParticipantModel>>> GetParticipantsModel(int id)
         {
+            //var pModel = await _context.ParticipantModel.FindAsync(id);
+             // (a => a.Eventid == id);
             if (_context.ParticipantModel == null)
             {
                 return NotFound();
             }
-
-            //  ObjectSet<EventModel> events = _context.EventModel;
-            //  ObjectSet<ParticipantModel> parts = _context.ParticipantModel;
-            
-            return CreatedAtAction("GetParticipantModel", new { eventid = id });//_context.ParticipantModel.Find(["",""]);
+            // ASP.NET does not have a synchronization context, no need for configureawait 
+            return await _context.ParticipantModel.Where(a => a.Eventid == id).ToListAsync(); ;
+        }
+        [HttpGet("{id}/Participants/{pid}")]
+        public async Task<ActionResult<IEnumerable<ParticipantModel>>> GetParticipantModel(int pid)
+        {
+            //var pModel = await _context.ParticipantModel.FindAsync(id);
+            // (a => a.Eventid == id);
+            if (_context.ParticipantModel == null)
+            {
+                return NotFound();
+            }
+            // ASP.NET does not have a synchronization context, no need for configureawait 
+            return await _context.ParticipantModel.Where(a => a.Eventid == pid).ToListAsync(); ;
         }
         // PUT: api/Events/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
