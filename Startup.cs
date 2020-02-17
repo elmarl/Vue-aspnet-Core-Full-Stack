@@ -75,11 +75,18 @@ namespace AspNetCoreVueStarter
                 // Add MapRazorPages if the app uses Razor Pages. Since Endpoint Routing includes support for many frameworks, adding Razor Pages is now opt -in.
                 endpoints.MapRazorPages();
             });
-
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
+                if (env.IsDevelopment())
+                {
+                    spa.UseVueCli(npmScript: "serve");
+                }
             });
+            /*app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+            });*/
         }
     }
 }

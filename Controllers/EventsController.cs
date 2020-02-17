@@ -78,7 +78,7 @@ namespace AspNetCoreVueStarter.Controllers
                     originalparticipant.Details = pModel.Details;
                     //_context.Entry(originalparticipant).CurrentValues.SetValues(pModel);
                     // _context.Entry<ParticipantModel>(pModel).State = EntityState.Modified;
-                    _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 return Ok();
             }
@@ -105,6 +105,19 @@ namespace AspNetCoreVueStarter.Controllers
             }
             // ASP.NET does not have a synchronization context, no need for configureawait 
             return await _context.ParticipantModel.Where(a => a.Participantid == pid).FirstAsync();
+        }
+        // DELETE: api/Events/5
+        [HttpDelete("{id}/Participants/{pid}")]
+        public async Task<ActionResult<ParticipantModel>> DeleteParticipantModel(int pid)
+        {
+            var pModel = await _context.ParticipantModel.FindAsync(pid);
+            if (pModel == null)
+            {
+                return NotFound();
+            }
+            _context.ParticipantModel.Remove(pModel);
+            await _context.SaveChangesAsync();
+            return pModel;
         }
         // PUT: api/Events/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -161,10 +174,8 @@ namespace AspNetCoreVueStarter.Controllers
             {
                 return NotFound();
             }
-
             _context.EventModel.Remove(eventModel);
             await _context.SaveChangesAsync();
-
             return eventModel;
         }
 

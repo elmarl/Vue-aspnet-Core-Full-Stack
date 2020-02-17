@@ -24,12 +24,20 @@
             </div>
         </div>
         <h2 class="container">Osalejad</h2>
-        <div v-bind:key="i.id" v-for="i in participantlist" class="container col-sm-2">
-            <div>
-                <router-link id="routerbtn" :to="formatroute(i.participantid)" tag="button" class="">{{i.firstname}}</router-link>
-                <br />
-            </div>
-        </div>
+            <table class="container col-sm-4 offset-sm-3">
+                <tr v-bind:key="i.id" v-for="i in participantlist">
+                    <td class="col">
+                        <span>
+                            <router-link id="routerbtn" :to="formatroute(i.participantid)" tag="button" class="">{{formatname(i)}}</router-link>
+                        </span>
+                    </td>
+                    <td class="col">
+                        <span>
+                            <v-btn @click="deleteparticipant(i)" depressed small>delete</v-btn>
+                        </span>
+                    </td>
+                </tr>
+            </table>
         <h2 class="container">Osaleja lisamine</h2>
         <!--Choose either to fill in a form for individuals or for companies-->
         <div class="container col-sm-2 offset-sm-6">
@@ -109,7 +117,6 @@ export default class EditEvent extends Vue {
 private eventitem: Event = new Event(0, '', '', '', '');
 private participantlist: Participant[] = [];
 private async created() {
-      //  this.participantlist.push(new Participant(5,'nimi','s','123',3,'card','det','person',3));
         await this.fetchEvent();
         await this.fetchParticipants();
     }
@@ -131,7 +138,7 @@ private async fetchParticipants() {
         const myevent: Event = new Event(this.eventitem.eventid, '', '', '', '');
         for (let i = 0; i < res.length; i++) {
             this.participantlist.push(new Participant(res[i].participantid, res[i].firstname, res[i].familyname,
-                res[i].idcode, res[i].numparticipants, res[i].paymentmethod, res[i].details, res[i].participantType, myevent));
+                res[i].idcode, res[i].numParticipants, res[i].paymentmethod, res[i].details, res[i].participantType, myevent));
         }
     } catch (e) {
         alert("failed fetch")
@@ -139,7 +146,6 @@ private async fetchParticipants() {
 }
 // submit person form
 private async submitperson() {
-    alert('ha');
     // ignore id when posting a new event, using undefined
     const firstnameinput = (document.getElementById('firstname') as HTMLInputElement).value;
     const familynameinput = (document.getElementById('familyname') as HTMLInputElement).value;
@@ -158,7 +164,6 @@ private async submitperson() {
 }
 // submit entity (business, corporation ...) form
 private async submitentity() {
-    alert('ha');
     // ignore id when posting a new event, using undefined
     const nameinput = (document.getElementById('name') as HTMLInputElement).value;
     const numparticipants = parseInt((document.getElementById('numparticipants') as HTMLInputElement).value, 10);
@@ -176,8 +181,21 @@ private async submitentity() {
     }
     this.$router.push('/');
 }
+private deleteparticipant(p: Participant){
+    try {
+        const result: any = axios.delete('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants/'.concat(p.participantid.toString()));
+    }
+    catch (e) {
+        alert('error deleting participant');
+    }
+    const index: number = this.participantlist.findIndex((x) => x.participantid === p.participantid);
+    this.participantlist.splice(index, 1);
+}
 // format date to human readable form
-private formatdate(): string {
+    private formatdate(): string {
+    if (this.eventitem.eventDate == '') {
+        return '';
+    }
     const today = new Date(this.eventitem.eventDate || '');
     let dd: string = today.getDate().toString();
     let mm: string = (today.getMonth() + 1).toString();
@@ -191,6 +209,14 @@ private formatdate(): string {
         mm = '0' + mm;
     }
     return mm + '-' + dd + '-' + yyyy;
+}
+private formatname(p: Participant){
+    if (p.participantType == 'person') {
+        return p.firstname.concat(" ").concat(p.familyname);
+    } else {
+        //otherwise its 'company'
+        return p.firstname;
+    }
 }
 // format route path for participant details
 private formatroute(participant: number): string {
@@ -214,5 +240,8 @@ private toggleform(form: string): void {
     }
     input, textarea, select {
         border-style:ridge;
+    }
+    table {
+        padding:0px;
     }
 </style>

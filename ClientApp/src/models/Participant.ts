@@ -5,7 +5,7 @@ export class Participant {
         public firstname: string,
         public familyname: string = '',
         public idcode: string,
-        public numparticipants: number = 0,
+        public numParticipants: number = 0,
         public paymentmethod: string,
         public details: string,
         public participantType: string,
