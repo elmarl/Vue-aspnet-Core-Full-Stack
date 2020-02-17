@@ -27,35 +27,6 @@ namespace AspNetCoreVueStarter.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventsModel>>> GetEventModel()
         {
-            //EventModel ev1 = new EventModel()
-            //{
-            //    Id = 0,
-            //    EventName = "test",
-            //    EventDate = DateTime.Now,
-            //    Location = "testloc",
-            //    Details = "testdet",
-            //};
-            //EventModel ev2 = new EventModel()
-            //{
-            //    Id = 1,
-            //    EventName = "test",
-            //    EventDate = DateTime.Now,
-            //    Location = "testloc",
-            //    Details = "testdet",
-            //};
-            //EventModel ev3 = new EventModel()
-            //{
-            //    Id = 1,
-            //    EventName = "testtest",
-            //    EventDate = DateTime.Now,
-            //    Location = "testloc",
-            //    Details = "testdet",
-            //};
-            //IEnumerable en;
-            //List<EventModel> ml = new List<EventModel>();
-            //ml.Add(ev1);
-            //ml.Add(ev2);
-            //ml.Add(ev3);
             if (_context.EventModel == null)
             {
                 string res = "";
@@ -88,6 +59,28 @@ namespace AspNetCoreVueStarter.Controllers
                 await _context.SaveChangesAsync();
             }
             return CreatedAtAction("GetEventModel", new { id = pModel.Participantid }, pModel);
+            }
+            return BadRequest();
+        }
+        // PUT request to update participant table
+        [HttpPut("{id}/Participants/{pid}")]
+        public async Task<ActionResult<ParticipantModel>> PutParticipantModel(int pid, ParticipantModel pModel)
+        {
+            if (pModel != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    var originalparticipant = _context.ParticipantModel.FirstOrDefault(o => o.Participantid == pid );
+                    originalparticipant.Firstname = pModel.Firstname;
+                    originalparticipant.Familyname = pModel.Familyname;
+                    originalparticipant.Idcode = pModel.Idcode;
+                    originalparticipant.NumParticipants = pModel.NumParticipants;
+                    originalparticipant.Details = pModel.Details;
+                    //_context.Entry(originalparticipant).CurrentValues.SetValues(pModel);
+                    // _context.Entry<ParticipantModel>(pModel).State = EntityState.Modified;
+                    _context.SaveChangesAsync();
+                }
+                return Ok();
             }
             return BadRequest();
         }

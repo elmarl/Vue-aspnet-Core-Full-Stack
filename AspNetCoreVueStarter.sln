@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreVueStarter", "AspNetCoreVueStarter.csproj", "{D1A4B196-FA92-4822-8C25-07D53A2903EF}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "eventsdatabase", "..\eventsdatabase\eventsdatabase.sqlproj", "{83FB52D0-4909-41AB-809C-132C5CD86AE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreVueStarterTests", "..\AspNetCoreVueStarterTests\AspNetCoreVueStarterTests.csproj", "{96AB89CB-0913-4309-A100-AE3FE8645ACF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +17,10 @@ Global
 		{D1A4B196-FA92-4822-8C25-07D53A2903EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1A4B196-FA92-4822-8C25-07D53A2903EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1A4B196-FA92-4822-8C25-07D53A2903EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83FB52D0-4909-41AB-809C-132C5CD86AE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83FB52D0-4909-41AB-809C-132C5CD86AE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83FB52D0-4909-41AB-809C-132C5CD86AE3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{83FB52D0-4909-41AB-809C-132C5CD86AE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83FB52D0-4909-41AB-809C-132C5CD86AE3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83FB52D0-4909-41AB-809C-132C5CD86AE3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{96AB89CB-0913-4309-A100-AE3FE8645ACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96AB89CB-0913-4309-A100-AE3FE8645ACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96AB89CB-0913-4309-A100-AE3FE8645ACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96AB89CB-0913-4309-A100-AE3FE8645ACF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
