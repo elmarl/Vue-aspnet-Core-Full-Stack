@@ -85,7 +85,6 @@ export default class App extends Vue {
     * {
         font-family:'Times New Roman';
     }
- 
 .vue-footer { 
      position: relative;
      bottom: 0;

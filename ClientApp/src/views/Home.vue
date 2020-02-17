@@ -21,7 +21,7 @@
             <v-row>
                 <v-col cols="6">
                     <v-card class="pa-2" outlined tile>
-                        <div class="center-text bkg">Yritused</div>
+                        <div class="center-text bkg">Tulevased uritused</div>
                         <div v-bind:key="i.id" v-for="i in events">
                             <Event_comp :eventitem="i" v-on:del_item="del_item" v-on:edit_item="edit_item"/>
                         </div>
@@ -29,7 +29,10 @@
                 </v-col>
                 <v-col cols="6">
                     <v-card class="pa-2" outlined tile>
-                        .col-6
+                        <div class="center-text bkg">Toimunud uritused</div>
+                        <div v-bind:key="i.id" v-for="i in events">
+                            <Event_comp :eventitem="i" v-on:del_item="del_item" v-on:edit_item="edit_item" />
+                        </div>
                     </v-card>
                 </v-col>
             </v-row>
@@ -64,10 +67,8 @@ export default class Home extends Vue {
                     res[i].eventDate, res[i].location, res[i].details));
             }
         } catch (e) {
-            this.showError = true;
-            this.errorMessage = `Error while loading events: ${e.message}.`;
+            alert('Error loading events');
         }
-        this.loading = false;
     }
     private async del_item(id: number) {
         // delete on front end
@@ -80,9 +81,7 @@ export default class Home extends Vue {
             const response = await axios.delete(url); // axios.get<Events[]>('api/Events');
             // this.events = response.data;
         } catch (e) {
-            this.showError = true;
-            this.errorMessage = `Error while deleting event: ${e.message}.`;
-            alert(this.errorMessage);
+            alert('Error deleting event');
         }
     }
     private edit_item(id: number) {
