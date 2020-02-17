@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using VueCliMiddleware;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreVueStarter.Data;
+using AspNetCoreVueStarter.Service;
 
 namespace AspNetCoreVueStarter
 {
@@ -23,6 +24,8 @@ namespace AspNetCoreVueStarter
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddScoped<ServiceLayer>();
 
             // Add AddRazorPages if the app uses Razor Pages.
             services.AddRazorPages();

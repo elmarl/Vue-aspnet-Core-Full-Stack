@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AspNetCoreVueStarter.Data;
 using AspNetCoreVueStarter.Models;
 using System.Collections;
+using AspNetCoreVueStarter.Service;
 
 namespace AspNetCoreVueStarter.Controllers
 {
@@ -16,35 +17,33 @@ namespace AspNetCoreVueStarter.Controllers
     public class EventsController : ControllerBase
     {
         private readonly DataContext _context;
+        private ServiceLayer _service;
 
-        public EventsController(DataContext context)
+        public EventsController(ServiceLayer service)
         {
-            _context = context;
-            _context.Database.EnsureCreated();
+            _service = service;
+            //_context = context;
+            //_context.Database.EnsureCreated();
         }
-
+        // Get all events
         // GET: api/Events
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EventsModel>>> GetEventModel()
+        public ActionResult<IEnumerable<EventsModel>> GetEventModel()
         {
-            if (_context.EventModel == null)
-            {
-                string res = "";
-                return NotFound();
-            }
-            return await _context.EventModel.ToListAsync();
+            return _service.getEvents();
         }
-
+        // Get specific event by id
         // GET: api/Events/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<EventsModel>> GetEventModel(int id)
+        public ActionResult<EventsModel> GetEventModel(int id)
         {
-            var eventModel = await _context.EventModel.FindAsync(id);
-            if (eventModel == null)
-            {
-                return NotFound();
-            }
-            return eventModel;
+            return _service.GetEvent(id);
+            //var eventModel = await _context.EventModel.FindAsync(id);
+            //if (eventModel == null)
+            //{
+            //    return NotFound();
+            //}
+            //return eventModel;
         }
         [HttpPost("{id}/Participants")]
         public async Task<ActionResult<ParticipantModel>> PostParticipantModel(int id, ParticipantModel pModel)
@@ -52,11 +51,12 @@ namespace AspNetCoreVueStarter.Controllers
             if(pModel != null) { 
             if (ModelState.IsValid)
             {
-                var eventModel = await _context.EventModel.FindAsync(id);
+                _service.AddParticipant(id, pModel);
+                /*var eventModel = await _context.EventModel.FindAsync(id);
                 
                 eventModel.Participants.Add(pModel);
                 //_context.EventModel.Update(eventModel);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();*/
             }
             return CreatedAtAction("GetEventModel", new { id = pModel.Participantid }, pModel);
             }
@@ -64,13 +64,14 @@ namespace AspNetCoreVueStarter.Controllers
         }
         // PUT request to update participant table
         [HttpPut("{id}/Participants/{pid}")]
-        public async Task<ActionResult<ParticipantModel>> PutParticipantModel(int pid, ParticipantModel pModel)
+        public ActionResult<ParticipantModel> PutParticipantModel(int pid, ParticipantModel pModel)
         {
             if (pModel != null)
             {
                 if (ModelState.IsValid)
                 {
-                    var originalparticipant = _context.ParticipantModel.FirstOrDefault(o => o.Participantid == pid );
+                    _service.UpdateParticipant(pid, pModel);
+                    /*var originalparticipant = _context.ParticipantModel.FirstOrDefault(o => o.Participantid == pid );
                     originalparticipant.Firstname = pModel.Firstname;
                     originalparticipant.Familyname = pModel.Familyname;
                     originalparticipant.Idcode = pModel.Idcode;
@@ -78,47 +79,58 @@ namespace AspNetCoreVueStarter.Controllers
                     originalparticipant.Details = pModel.Details;
                     //_context.Entry(originalparticipant).CurrentValues.SetValues(pModel);
                     // _context.Entry<ParticipantModel>(pModel).State = EntityState.Modified;
-                    _context.SaveChanges();
+                    _context.SaveChanges();*/
                 }
                 return Ok();
             }
             return BadRequest();
         }
         [HttpGet("{id}/Participants")]
-        public async Task<ActionResult<IEnumerable<ParticipantModel>>> GetParticipantsModel(int id)
+        public ActionResult<IEnumerable<ParticipantModel>> GetParticipantsModel(int id)
         {
+            return _service.GetParticipants(id);
             //var pModel = await _context.ParticipantModel.FindAsync(id);
              // (a => a.Eventid == id);
-            if (_context.ParticipantModel == null)
+            /*if (_context.ParticipantModel == null)
             {
                 return NotFound();
             }
             // ASP.NET does not have a synchronization context, no need for configureawait 
-            return await _context.ParticipantModel.Where(a => a.EventModel.Eventid == id).ToListAsync(); ;
+            return await _context.ParticipantModel.Where(a => a.EventModel.Eventid == id).ToListAsync();*/
         }
         [HttpGet("{id}/Participants/{pid}")]
-        public async Task<ActionResult<ParticipantModel>> GetParticipantModel(int pid)
+        public ActionResult<ParticipantModel> GetParticipantModel(int pid)
         {
-            if (_context.ParticipantModel == null)
+            return _service.GetParticipant(pid);
+            /*if (_context.ParticipantModel == null)
             {
                 return NotFound();
             }
             // ASP.NET does not have a synchronization context, no need for configureawait 
-            return await _context.ParticipantModel.Where(a => a.Participantid == pid).FirstAsync();
+            return await _context.ParticipantModel.Where(a => a.Participantid == pid).FirstAsync();*/
         }
         // DELETE: api/Events/5
         [HttpDelete("{id}/Participants/{pid}")]
         public async Task<ActionResult<ParticipantModel>> DeleteParticipantModel(int pid)
         {
-            var pModel = await _context.ParticipantModel.FindAsync(pid);
+            ParticipantModel pModel = _service.DeleteParticipant(pid);
+            if (pModel == null)
+            {
+                return NotFound();
+            } else
+            {
+                return pModel;
+            }
+            /*var pModel = await _context.ParticipantModel.FindAsync(pid);
             if (pModel == null)
             {
                 return NotFound();
             }
             _context.ParticipantModel.Remove(pModel);
             await _context.SaveChangesAsync();
-            return pModel;
+            return pModel;*/
         }
+        /*
         // PUT: api/Events/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
@@ -149,7 +161,7 @@ namespace AspNetCoreVueStarter.Controllers
             }
 
             return NoContent();
-        }
+        }*/
 
         // POST: api/Events
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -158,9 +170,10 @@ namespace AspNetCoreVueStarter.Controllers
         public async Task<ActionResult<EventsModel>> PostEventModel(EventsModel eventModel)
         {
             if (ModelState.IsValid) 
-            { 
-                _context.EventModel.Add(eventModel);
-                await _context.SaveChangesAsync();
+            {
+                _service.AddEvent(eventModel);
+                //_context.EventModel.Add(eventModel);
+                //await _context.SaveChangesAsync();
             }
             return CreatedAtAction("GetEventModel", new { id = eventModel.Eventid }, eventModel);
         }
@@ -169,6 +182,14 @@ namespace AspNetCoreVueStarter.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<EventsModel>> DeleteEventModel(int id)
         {
+            EventsModel eventsModel = _service.DeleteEvent(id);
+            if (eventsModel == null)
+            {
+                return NotFound();
+            } else
+            {
+                return eventsModel;
+            }
             var eventModel = await _context.EventModel.FindAsync(id);
             if (eventModel == null)
             {
@@ -179,9 +200,9 @@ namespace AspNetCoreVueStarter.Controllers
             return eventModel;
         }
 
-        private bool EventModelExists(int id)
+        /*private bool EventModelExists(int id)
         {
             return _context.EventModel.Any(e => e.Eventid == id);
-        }
+        }*/
     }
 }

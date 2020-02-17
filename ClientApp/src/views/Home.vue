@@ -18,16 +18,6 @@
                 </v-flex>
             </v-layout>
         </v-container>
-
-        <!--<v-alert :value="showError" type="error" v-text="errorMessage">
-            This is an error alert.
-        </v-alert>
-
-        <v-alert :value="showError" type="warning">
-            Are you sure you're using ASP.NET Core endpoint? (default at <a href="http://localhost:5000/fetch-data">http://localhost:5000</a>)<br>
-            API call would fail with status code 404 when calling from Vue app (default at <a href="http://localhost:8080/fetch-data">http://localhost:8080</a>) without devServer proxy settings in vue.config.js file.
-        </v-alert>-->
-        <!--added container class to container in App.vue to keep row from being too wide-->
             <v-row>
                 <v-col cols="6">
                     <v-card class="pa-2" outlined tile>
@@ -61,17 +51,11 @@ import axios from 'axios';
 export default class Home extends Vue {
     private events: Event[] = [];
     private errorMessage: string = 'Error while loading event data.';
-    private showError: boolean = false;
-    private loading: boolean = true;
 
     private async created() {
         await this.fetchEvents();
   }
-    private async fetchEvents() {
-        // const dt = new Date();
-        // const mydate = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
-        // this.events.push(new Event(0, 'test', dt.toISOString(), 'tll', 'det'));
-        // this.events.push(new Event(1, 'test2', dt.toISOString(), 'par', 'det')); 
+    private async fetchEvents() { 
         try {
             const response = await axios.get<Event[]>('api/Events');
             const res = response.data;

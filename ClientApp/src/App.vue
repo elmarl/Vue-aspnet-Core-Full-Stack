@@ -64,11 +64,9 @@
 </template>
 
 <script lang="ts">
-// import HelloWorld from '@/components/HelloWorld.vue';
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
-  // components: { HelloWorld },
 })
 export default class App extends Vue {
   private clipped: boolean = true;
@@ -79,12 +77,14 @@ export default class App extends Vue {
   private items = [
     { title: 'Home', icon: 'home', link: '/' },
     { title: 'Urituse lisamine', icon: 'touch_app', link: '/lisauritus' },
-    { title: 'Fetch data', icon: 'get_app', link: '/fetch-data' },
   ];
 }
 </script>
 
 <style scoped>
+    * {
+        font-family:'Times New Roman';
+    }
  
 .vue-footer { 
      position: relative;
