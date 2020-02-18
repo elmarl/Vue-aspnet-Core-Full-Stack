@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AspNetCoreVueStarter.Data;
 using AspNetCoreVueStarter.Models;
-using System.Collections;
 using AspNetCoreVueStarter.Service;
 
 namespace AspNetCoreVueStarter.Controllers
@@ -16,100 +10,114 @@ namespace AspNetCoreVueStarter.Controllers
     [ApiController]
     public class EventsController : ControllerBase
     {
-        private readonly DataContext _context;
-        private ServiceLayer _service;
+        private readonly IEventService _service;
 
-        public EventsController(ServiceLayer service)
+        public EventsController(IEventService service)
         {
             _service = service;
-            //_context = context;
-            //_context.Database.EnsureCreated();
         }
         // Get all events
         // GET: api/Events
         [HttpGet]
         public ActionResult<IEnumerable<EventsModel>> GetEventModel()
         {
-            return _service.getEvents();
+            return _service.GetEvents();
         }
         // Get specific event by id
         // GET: api/Events/5
         [HttpGet("{id}")]
         public ActionResult<EventsModel> GetEventModel(int id)
         {
-            return _service.GetEvent(id);
-            //var eventModel = await _context.EventModel.FindAsync(id);
-            //if (eventModel == null)
-            //{
-            //    return NotFound();
-            //}
-            //return eventModel;
+            EventsModel item = _service.GetEvent(id);
+            if (item != null)
+            {
+                return _service.GetEvent(id);
+            } else
+            {
+                return NotFound();
+            }
+        }
+        // POST: api/Events
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
+        // more details see https://aka.ms/RazorPagesCRUD.
+        [HttpPost]
+        public async Task<ActionResult<EventsModel>> PostEventModel(EventsModel eventModel)
+        {
+            if (eventModel != null && ModelState.IsValid)
+            {
+                _service.AddEvent(eventModel);
+                return CreatedAtAction("GetEventModel", new { id = eventModel.Eventid }, eventModel);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+        // DELETE: api/Events/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<EventsModel>> DeleteEventModel(int id)
+        {
+            EventsModel eventsModel = _service.DeleteEvent(id);
+            if (eventsModel == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(eventsModel);
+            }
         }
         [HttpPost("{id}/Participants")]
-        public async Task<ActionResult<ParticipantModel>> PostParticipantModel(int id, ParticipantModel pModel)
+        public ActionResult<ParticipantModel> PostParticipantModel(int id, ParticipantModel pModel)
         {
-            if(pModel != null) { 
-            if (ModelState.IsValid)
+            if (pModel != null && ModelState.IsValid)
             {
                 _service.AddParticipant(id, pModel);
-                /*var eventModel = await _context.EventModel.FindAsync(id);
-                
-                eventModel.Participants.Add(pModel);
-                //_context.EventModel.Update(eventModel);
-                await _context.SaveChangesAsync();*/
+                return CreatedAtAction("GetEventModel", new { id = pModel.Participantid }, pModel);
+            } else {
+                return BadRequest();
             }
-            return CreatedAtAction("GetEventModel", new { id = pModel.Participantid }, pModel);
+        }
+        [HttpGet("{id}/Participants")]
+        public ActionResult<IEnumerable<ParticipantModel>> GetParticipantsModel(int id)
+        {
+            List<ParticipantModel> participants = _service.GetParticipants(id);
+            if (participants != null)
+            {
+                return _service.GetParticipants(id);
             }
-            return BadRequest();
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpGet("{id}/Participants/{pid}")]
+        public ActionResult<ParticipantModel> GetParticipantModel(int pid)
+        {
+            ParticipantModel participant = _service.GetParticipant(pid);
+            if (participant != null)
+            {
+                return participant;
+            }
+            else
+            {
+                return NotFound();
+            }
         }
         // PUT request to update participant table
         [HttpPut("{id}/Participants/{pid}")]
         public ActionResult<ParticipantModel> PutParticipantModel(int pid, ParticipantModel pModel)
         {
-            if (pModel != null)
+            if (pModel != null && ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    _service.UpdateParticipant(pid, pModel);
-                    /*var originalparticipant = _context.ParticipantModel.FirstOrDefault(o => o.Participantid == pid );
-                    originalparticipant.Firstname = pModel.Firstname;
-                    originalparticipant.Familyname = pModel.Familyname;
-                    originalparticipant.Idcode = pModel.Idcode;
-                    originalparticipant.NumParticipants = pModel.NumParticipants;
-                    originalparticipant.Details = pModel.Details;
-                    //_context.Entry(originalparticipant).CurrentValues.SetValues(pModel);
-                    // _context.Entry<ParticipantModel>(pModel).State = EntityState.Modified;
-                    _context.SaveChanges();*/
-                }
-                return Ok();
-            }
-            return BadRequest();
-        }
-        [HttpGet("{id}/Participants")]
-        public ActionResult<IEnumerable<ParticipantModel>> GetParticipantsModel(int id)
-        {
-            return _service.GetParticipants(id);
-            //var pModel = await _context.ParticipantModel.FindAsync(id);
-             // (a => a.Eventid == id);
-            /*if (_context.ParticipantModel == null)
+                _service.UpdateParticipant(pid, pModel);
+                return Ok(pModel);
+            } else
             {
-                return NotFound();
+                return BadRequest();
             }
-            // ASP.NET does not have a synchronization context, no need for configureawait 
-            return await _context.ParticipantModel.Where(a => a.EventModel.Eventid == id).ToListAsync();*/
         }
-        [HttpGet("{id}/Participants/{pid}")]
-        public ActionResult<ParticipantModel> GetParticipantModel(int pid)
-        {
-            return _service.GetParticipant(pid);
-            /*if (_context.ParticipantModel == null)
-            {
-                return NotFound();
-            }
-            // ASP.NET does not have a synchronization context, no need for configureawait 
-            return await _context.ParticipantModel.Where(a => a.Participantid == pid).FirstAsync();*/
-        }
-        // DELETE: api/Events/5
+        // DELETE: api/Participants/5
         [HttpDelete("{id}/Participants/{pid}")]
         public async Task<ActionResult<ParticipantModel>> DeleteParticipantModel(int pid)
         {
@@ -119,90 +127,8 @@ namespace AspNetCoreVueStarter.Controllers
                 return NotFound();
             } else
             {
-                return pModel;
+                return Ok(pModel);
             }
-            /*var pModel = await _context.ParticipantModel.FindAsync(pid);
-            if (pModel == null)
-            {
-                return NotFound();
-            }
-            _context.ParticipantModel.Remove(pModel);
-            await _context.SaveChangesAsync();
-            return pModel;*/
         }
-        /*
-        // PUT: api/Events/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEventModel(int id, EventsModel eventModel)
-        {
-            if (id != eventModel.Eventid)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(eventModel).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EventModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }*/
-
-        // POST: api/Events
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<EventsModel>> PostEventModel(EventsModel eventModel)
-        {
-            if (ModelState.IsValid) 
-            {
-                _service.AddEvent(eventModel);
-                //_context.EventModel.Add(eventModel);
-                //await _context.SaveChangesAsync();
-            }
-            return CreatedAtAction("GetEventModel", new { id = eventModel.Eventid }, eventModel);
-        }
-
-        // DELETE: api/Events/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<EventsModel>> DeleteEventModel(int id)
-        {
-            EventsModel eventsModel = _service.DeleteEvent(id);
-            if (eventsModel == null)
-            {
-                return NotFound();
-            } else
-            {
-                return eventsModel;
-            }
-            var eventModel = await _context.EventModel.FindAsync(id);
-            if (eventModel == null)
-            {
-                return NotFound();
-            }
-            _context.EventModel.Remove(eventModel);
-            await _context.SaveChangesAsync();
-            return eventModel;
-        }
-
-        /*private bool EventModelExists(int id)
-        {
-            return _context.EventModel.Any(e => e.Eventid == id);
-        }*/
     }
 }

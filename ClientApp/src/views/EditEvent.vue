@@ -3,7 +3,7 @@
     personform - fuusilise isiku vorm
 -->
 <template>
-    <v-container fluid fill-height class="container" style="">
+    <v-container fluid fill-height class="container">
         <h2 class="container">Yritus</h2>
         <div class="container col-sm-6 myrow">
             <div class="row">

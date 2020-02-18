@@ -16,7 +16,7 @@
         <!--<v-btn @click="$emit('edit_item', eventitem['id'])" to=eventitem["id"] depressed small>Osav6tjad</v-btn>-->
       </v-col>
           <v-col>
-        <v-btn @click="$emit('del_item', eventitem['eventid'])" depressed small>delete</v-btn>
+        <v-btn :required="ispastevent ? false : true" id="deletebtn" @click="$emit('del_item', eventitem['eventid'])" depressed small>delete</v-btn>
       </v-col>
     </v-row>
   </div>
@@ -26,7 +26,8 @@
 export default {
   name: 'Event_component',
   props: {
-    eventitem: Object,
+      eventitem: Object,
+      ispastevent: Boolean,
   },
   computed: {
     routemsg: function() {

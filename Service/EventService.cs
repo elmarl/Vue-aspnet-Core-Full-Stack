@@ -8,28 +8,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreVueStarter.Service
 {
-    public class ServiceLayer
+    public class EventService : IEventService
     {
         private readonly DataContext _context;
-        public ServiceLayer(DataContext context)
+        public EventService(DataContext context)
         {
             _context = context;
-            if(_context != null)
+            if (_context != null)
             {
                 _context.Database.EnsureCreated();
             }
         }
         // All Event table related actions
         // Get all the events, if no events in the database return an empty array
-        public List<EventsModel> getEvents()
+        public List<EventsModel> GetEvents()
         {
-            if (_context.EventModel != null) { 
-                return _context.EventModel.ToList(); 
-            } else
+            if (_context.EventModel != null)
+            {
+                return _context.EventModel.ToList();
+            }
+            else
             {
                 return new List<EventsModel>();
             }
-            
         }
         public EventsModel GetEvent(int id)
         {
@@ -56,12 +57,26 @@ namespace AspNetCoreVueStarter.Service
         // Get Participants for event by event id
         public List<ParticipantModel> GetParticipants(int id)
         {
-            return _context.ParticipantModel.Where(a => a.EventModel.Eventid == id).ToList();
+            try
+            {
+                return _context.ParticipantModel.Where(a => a.EventModel.Eventid == id).ToList();
+            }
+            catch (ArgumentNullException ex)
+            {
+                return null;
+            }
         }
         // Get specific participant
         public ParticipantModel GetParticipant(int id)
         {
-            return _context.ParticipantModel.Where(a => a.Participantid == id).First();
+            try
+            {
+                return _context.ParticipantModel.Where(a => a.Participantid == id).First();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
         // Add participant by adding it to the parent table, entity framework
         public void AddParticipant(int id, ParticipantModel participantModel)

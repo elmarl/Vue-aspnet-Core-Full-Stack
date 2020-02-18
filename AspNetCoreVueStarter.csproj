@@ -31,6 +31,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="VueCliMiddleware" Version="3.1.1" />
   </ItemGroup>
 
@@ -48,6 +50,7 @@
   <ItemGroup>
     <None Remove="ClientApp\src\models\Event.ts" />
     <None Remove="ClientApp\src\models\Participant.ts" />
+    <None Remove="ClientApp\src\views\Index.vue" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,6 +64,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\models\Event.ts" />
     <TypeScriptCompile Include="ClientApp\src\models\Participant.ts" />
+    <TypeScriptCompile Include="ClientApp\src\views\Index.vue" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

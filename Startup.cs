@@ -25,7 +25,7 @@ namespace AspNetCoreVueStarter
         {
             services.AddControllersWithViews();
 
-            services.AddScoped<ServiceLayer>();
+            services.AddScoped<IEventService, EventService>();
 
             // Add AddRazorPages if the app uses Razor Pages.
             services.AddRazorPages();

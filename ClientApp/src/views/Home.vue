@@ -23,7 +23,7 @@
                     <v-card class="pa-2" outlined tile>
                         <div class="center-text bkg">Tulevased uritused</div>
                         <div v-bind:key="i.id" v-for="i in events">
-                            <Event_comp :eventitem="i" v-on:del_item="del_item" v-on:edit_item="edit_item"/>
+                            <Event_comp :eventitem="i" :ispastevent="false" v-on:del_item="del_item" v-on:edit_item="edit_item"/>
                         </div>
                     </v-card>
                 </v-col>
@@ -31,7 +31,7 @@
                     <v-card class="pa-2" outlined tile>
                         <div class="center-text bkg">Toimunud uritused</div>
                         <div v-bind:key="i.id" v-for="i in events">
-                            <Event_comp :eventitem="i" v-on:del_item="del_item" v-on:edit_item="edit_item" />
+                            <Event_comp :eventitem="i" :ispastevent="true" v-on:del_item="del_item" v-on:edit_item="edit_item" />
                         </div>
                     </v-card>
                 </v-col>

@@ -3,46 +3,47 @@
     to the index page.
     To prevent enter from submitting the form, using v-on:keydown.enter.prevent=""
     -->
-<template>
-    <v-container fluid fill-height class="container">
-        <v-container class="container" style="text-align:center">
-            <form class="form-horizontal" @submit.prevent="">
+    <template>   
+        <v-container fluid fill-height class="container sheet" style="text-align:center">
+            <v-row no-gutters class="subheader">
+                <v-col cols="4">
+                    <div class="pa-2">
+                        Urituse Lisamine
+                    </div>
+                </v-col>
+                <v-col cols="8">
+                    <div class="pa-2">
+                        <v-img class="subheaderimg" src="../assets/libled.jpg"></v-img>
+                    </div>
+                </v-col>
+            </v-row>
+            <h2 class="col-sm-6 offset-sm-2 blue-text">Urituse lisamine</h2>
+            <form class="form-horizontal col-sm-6 offset-sm-4" @submit.prevent="">
                 <div class="form-group row">
                     <label class="control-label col-sm-2" for="name">Nimi</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="name" name="name" style="border-style:ridge" v-on:keydown.enter.prevent="" required>
-                    </div>
+                    <input type="text" class="form-control col-sm-8" id="name" name="name" style="border-style:ridge" v-on:keydown.enter.prevent="" required>
                 </div>
                 <div class="form-group row">
                     <label class="control-label col-sm-2" for="date">Kuupaev:</label>
-                    <div class="col-sm-10">
-                        <input type="datetime-local" class="form-control" v-bind:min="getTime()" id="date" style="border-style:ridge" v-on:keydown.enter.prevent="" required>
-                    </div>
+                    <input type="datetime-local" class="form-control col-sm-8" v-bind:min="getTime()" id="date" style="border-style:ridge" v-on:keydown.enter.prevent="" required>
                 </div>
                 <div class="form-group row">
                     <label class="control-label col-sm-2" for="location">Koht</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="location" name="location" style="border-style:ridge" v-on:keydown.enter.prevent="" required>
-                    </div>
+                    <input type="text" class="form-control col-sm-8" id="location" name="location" style="border-style:ridge" v-on:keydown.enter.prevent="" required>
                 </div>
                 <div class="form-group row">
                     <label class="control-label col-sm-2" for="details">Lisainfo</label>
-                    <div class="col-sm-10">
-                        <textarea type="text" class="form-control" id="details" name="details" style="border-style:ridge" v-on:keydown.enter.prevent=""></textarea>
-                    </div>
+                    <textarea type="text" class="form-control col-sm-8" id="details" name="details" style="border-style:ridge" v-on:keydown.enter.prevent=""></textarea>
                 </div>
                 <div class="form-group row">
                     <router-link to="/" tag="button" class="col-sm-2">Tagasi</router-link>
-                    <div class="col-sm-10">
-                        <input type="submit" class="form-control" @click.stop.prevent="submit()">
-                        <!-- @click.stop.prevent="submit()"-->
-                    </div>
+                    <input type="submit" class="form-control col-sm-8" @click.stop.prevent="submit()">
+                    <!-- @click.stop.prevent="submit()"-->
                 </div>
             </form>
 
         </v-container>
-    </v-container>
-</template>
+    </template>
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
     import { Event } from '../models/Event';
@@ -87,5 +88,21 @@
 
     form {
         display: inline-block;
+    }
+    .sheet{
+        background-color:white;
+        margin-top: 10px;
+    }
+    .blue-text{
+        color:midnightblue;
+    }
+    .subheader{
+        padding:0px;
+        margin:0px;
+        width:auto;
+    }
+    .subheaderimg {
+        width:100%;
+        max-height:40px
     }
 </style>
