@@ -3,7 +3,7 @@
     personform - fuusilise isiku vorm
 -->
 <template>
-    <v-container fluid fill-height class="container">
+    <v-container fluid fill-height class="container sheet">
         <h2 class="container">Yritus</h2>
         <div class="container col-sm-6 myrow">
             <div class="row">
@@ -124,7 +124,7 @@ private async created() {
 private async fetchEvent() {
     try {
         const eventid = window.location.href.split('/').slice(-1)[0];
-        const response = await axios.get<Event>('https://localhost:5001/api/Events/' + eventid);
+        const response = await axios.get<Event>('https://localhost:5001/api/events/' + eventid);
         const res = response.data;
         this.eventitem = new Event(res.eventid, res.eventName, res.eventDate, res.location, res.details);
     } catch (e) {
@@ -133,7 +133,7 @@ private async fetchEvent() {
 }
 private async fetchParticipants() {
     try {
-        const response = await axios.get<Participant[]>('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants');
+        const response = await axios.get<Participant[]>('https://localhost:5001/api/events/' + this.eventitem.eventid + '/participants');
         const res = response.data;
         const myevent: Event = new Event(this.eventitem.eventid, '', '', '', '');
         for (let i = 0; i < res.length; i++) {
@@ -156,11 +156,12 @@ private async submitperson() {
     const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
         paymentmethodinput, detailsinput, 'person', myevent);
     try {
-        const result: any = await axios.post('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants', inputperson);
+        const result: any = await axios.post('https://localhost:5001/api/events/' + this.eventitem.eventid + '/participants', inputperson);
     } catch (e) {
         alert('error posting data');
     }
-    this.$router.push('/');
+    this.fetchParticipants();
+    //this.$router.push('/');
 }
 // submit entity (business, corporation ...) form
 private async submitentity() {
@@ -174,16 +175,17 @@ private async submitentity() {
     const inputcompany = new Participant(0, nameinput, '', idcodeinput, numparticipants,
         paymentmethodinput, detailsinput, 'company', myevent);
     try {
-        const result: any = axios.post('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants', inputcompany);
+        const result: any = axios.post('https://localhost:5001/api/events/' + this.eventitem.eventid + '/participants', inputcompany);
     }
     catch (e) {
         alert('error posting data');
     }
-    this.$router.push('/');
+    this.fetchParticipants();
+    //this.$router.push('/');
 }
 private deleteparticipant(p: Participant){
     try {
-        const result: any = axios.delete('https://localhost:5001/api/Events/' + this.eventitem.eventid + '/Participants/'.concat(p.participantid.toString()));
+        const result: any = axios.delete('https://localhost:5001/api/events/' + this.eventitem.eventid + '/participants/'.concat(p.participantid.toString()));
     }
     catch (e) {
         alert('error deleting participant');
@@ -243,5 +245,9 @@ private toggleform(form: string): void {
     }
     table {
         padding:0px;
+    }
+    .sheet{
+        background-color:white;
+        margin-top: 10px;
     }
 </style>

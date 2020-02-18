@@ -25,7 +25,7 @@ namespace AspNetCoreVueStarter.Models
         [StringLength(50, ErrorMessage = "Maksimaalselt 50 tähemärki")]
         public string Location { get; set; }
         [Display(Name = "Lisainfo")]
-        [StringLength(1500, ErrorMessage = "Maksimaalselt 1500 tähemärki")]
+        [StringLength(1000, ErrorMessage = "Maksimaalselt 1000 tähemärki")]
         public string Details { get; set; }
         public ICollection<ParticipantModel> Participants { get; set; } = new HashSet<ParticipantModel>();
     }

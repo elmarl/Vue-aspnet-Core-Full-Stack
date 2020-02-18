@@ -79,24 +79,52 @@ namespace AspNetCoreVueStarter.Service
             }
         }
         // Add participant by adding it to the parent table, entity framework
-        public void AddParticipant(int id, ParticipantModel participantModel)
+        // Because only one table is used to store both companies and persons, validate for persons if
+        // max details length has been surpassed or not. Validation for companies <5000 is already done
+        // by the model.
+        public ParticipantModel AddParticipant(int id, ParticipantModel participantModel)
         {
-            EventsModel eventModel = _context.EventModel.Find(id);
-            eventModel.Participants.Add(participantModel);
-            _context.SaveChanges();
+            if(participantModel.ParticipantType == "person") {
+                if (participantModel.Details.Length < 1500)
+                {
+                    EventsModel eventModel = _context.EventModel.Find(id);
+                    eventModel.Participants.Add(participantModel);
+                    _context.SaveChanges();
+                    return participantModel;
+                } else
+                {
+                    return null;
+                }
+            } else if (participantModel.ParticipantType == "company")
+            {
+                EventsModel eventModel = _context.EventModel.Find(id);
+                eventModel.Participants.Add(participantModel);
+                _context.SaveChanges();
+                return participantModel;
+            } else
+            {
+                return null;
+            }
         }
         // Update Participant 
-        public void UpdateParticipant(int id, ParticipantModel participantModel)
+        public ParticipantModel UpdateParticipant(int id, ParticipantModel participantModel)
         {
-            ParticipantModel originalparticipant = _context.ParticipantModel.FirstOrDefault(o => o.Participantid == id);
-            originalparticipant.Firstname = participantModel.Firstname;
-            originalparticipant.Familyname = participantModel.Familyname;
-            originalparticipant.Idcode = participantModel.Idcode;
-            originalparticipant.NumParticipants = participantModel.NumParticipants;
-            originalparticipant.Details = participantModel.Details;
-            //_context.Entry(originalparticipant).CurrentValues.SetValues(pModel);
-            // _context.Entry<ParticipantModel>(pModel).State = EntityState.Modified;
-            _context.SaveChanges();
+            try
+            {
+                ParticipantModel originalparticipant = _context.ParticipantModel.FirstOrDefault(o => o.Participantid == id);
+                originalparticipant.Firstname = participantModel.Firstname;
+                originalparticipant.Familyname = participantModel.Familyname;
+                originalparticipant.Idcode = participantModel.Idcode;
+                originalparticipant.NumParticipants = participantModel.NumParticipants;
+                originalparticipant.Details = participantModel.Details;
+                //_context.Entry(originalparticipant).CurrentValues.SetValues(pModel);
+                // _context.Entry<ParticipantModel>(pModel).State = EntityState.Modified;
+                _context.SaveChanges();
+                return participantModel;
+            } catch (Exception ex)
+            {
+                return null;
+            }
         }
         // Delete Participant
         public ParticipantModel DeleteParticipant(int id)
@@ -107,7 +135,7 @@ namespace AspNetCoreVueStarter.Service
                 return null;
             }
             _context.ParticipantModel.Remove(pModel);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
             return pModel;
         }
     }

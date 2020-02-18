@@ -65,7 +65,6 @@
             return formatted_date;
         }
         public async submit() {
-            alert("form entered");
             const nameinput = (document.getElementById('name') as HTMLInputElement).value;
             const dateinput = (document.getElementById('date') as HTMLInputElement).value;
             const locationinput = (document.getElementById('location') as HTMLInputElement).value;
@@ -74,7 +73,7 @@
             const inputevent: Event = new Event(undefined, nameinput, dateinput, locationinput, detailsinput);
             // var msg = JSON.stringify(inputevent);
             try {
-                const result: any = await axios.post('api/Events', inputevent);
+                const result: any = await axios.post('api/events', inputevent);
             }
             catch(e) {
                 alert('error posting data');
