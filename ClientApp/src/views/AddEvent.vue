@@ -48,6 +48,7 @@
     import { Component, Vue } from 'vue-property-decorator';
     import { Event } from '../models/Event';
     import axios from 'axios';
+    import BaseUrl from '../NewFolder/BaseUrl';
 
     @Component({})
     export default class FetchDataView extends Vue {
@@ -73,7 +74,7 @@
             const inputevent: Event = new Event(undefined, nameinput, dateinput, locationinput, detailsinput);
             // var msg = JSON.stringify(inputevent);
             try {
-                const result: any = await axios.post('api/events', inputevent);
+                const result: any = await axios.post(BaseUrl, inputevent);
             }
             catch(e) {
                 alert('error posting data');

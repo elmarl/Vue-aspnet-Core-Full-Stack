@@ -25,7 +25,6 @@ namespace AspNetCoreVueStarter.Models
         public int? NumParticipants { get; set; }
         [Required]
         public string Paymentmethod { get; set; }
-        [Required]
         [StringLength(5000, ErrorMessage = "Maksimaalselt 5000 tähemärki")]
         public string Details { get; set; }
         [Required]

@@ -100,7 +100,7 @@
                 </div>
                 <div class="row">
                     <router-link id="routerbtn" to="/" tag="button" class="col">Tagasi</router-link>
-                    <input type="submit" class="col" @click.stop.prevent="submitentity()">
+                    <input type="submit" class="col" @click.stop.prevent="submitcompany()">
                 </div>
             </div>
         </form>
@@ -112,6 +112,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Event } from '../models/Event';
 import { Participant } from '../models/Participant';
 import axios from 'axios';
+import BaseUrl from '../NewFolder/BaseUrl';
 @Component({})
 export default class EditEvent extends Vue {
 private eventitem: Event = new Event(0, '', '', '', '');
@@ -124,7 +125,7 @@ private async created() {
 private async fetchEvent() {
     try {
         const eventid = window.location.href.split('/').slice(-1)[0];
-        const response = await axios.get<Event>('https://localhost:5001/api/events/' + eventid);
+        const response = await axios.get<Event>(BaseUrl + eventid);
         const res = response.data;
         this.eventitem = new Event(res.eventid, res.eventName, res.eventDate, res.location, res.details);
     } catch (e) {
@@ -133,9 +134,10 @@ private async fetchEvent() {
 }
 private async fetchParticipants() {
     try {
-        const response = await axios.get<Participant[]>('https://localhost:5001/api/events/' + this.eventitem.eventid + '/participants');
+        const response = await axios.get<Participant[]>(BaseUrl + this.eventitem.eventid + '/participants');
         const res = response.data;
         const myevent: Event = new Event(this.eventitem.eventid, '', '', '', '');
+        this.participantlist = [];
         for (let i = 0; i < res.length; i++) {
             this.participantlist.push(new Participant(res[i].participantid, res[i].firstname, res[i].familyname,
                 res[i].idcode, res[i].numParticipants, res[i].paymentmethod, res[i].details, res[i].participantType, myevent));
@@ -156,7 +158,7 @@ private async submitperson() {
     const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
         paymentmethodinput, detailsinput, 'person', myevent);
     try {
-        const result: any = await axios.post('https://localhost:5001/api/events/' + this.eventitem.eventid + '/participants', inputperson);
+        const result: any = await axios.post(BaseUrl + this.eventitem.eventid + '/participants', inputperson);
     } catch (e) {
         alert('error posting data');
     }
@@ -164,7 +166,7 @@ private async submitperson() {
     //this.$router.push('/');
 }
 // submit entity (business, corporation ...) form
-private async submitentity() {
+private async submitcompany() {
     // ignore id when posting a new event, using undefined
     const nameinput = (document.getElementById('name') as HTMLInputElement).value;
     const numparticipants = parseInt((document.getElementById('numparticipants') as HTMLInputElement).value, 10);
@@ -175,7 +177,7 @@ private async submitentity() {
     const inputcompany = new Participant(0, nameinput, '', idcodeinput, numparticipants,
         paymentmethodinput, detailsinput, 'company', myevent);
     try {
-        const result: any = axios.post('https://localhost:5001/api/events/' + this.eventitem.eventid + '/participants', inputcompany);
+        const result: any = axios.post(BaseUrl + this.eventitem.eventid + '/participants', inputcompany);
     }
     catch (e) {
         alert('error posting data');
@@ -185,7 +187,7 @@ private async submitentity() {
 }
 private deleteparticipant(p: Participant){
     try {
-        const result: any = axios.delete('https://localhost:5001/api/events/' + this.eventitem.eventid + '/participants/'.concat(p.participantid.toString()));
+        const result: any = axios.delete(BaseUrl + this.eventitem.eventid + '/participants/'.concat(p.participantid.toString()));
     }
     catch (e) {
         alert('error deleting participant');

@@ -61,6 +61,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
 import { Participant } from '../models/Participant';
 import { Event } from '../models/Event';
+import BaseUrl from '../NewFolder/BaseUrl'
+
 @Component
 export default class EditParticipant extends Vue {
     private participant: Participant = new Participant(0,'','','',0,'','','', new Event(0, '','','',''));
@@ -71,7 +73,7 @@ export default class EditParticipant extends Vue {
     private async fetchParticipant() {
         try {const eventid = window.location.href.split('/').slice(-3)[0];
             const participantid = window.location.href.split('/').slice(-1)[0];
-            const response = await axios.get<Participant>('https://localhost:5001/api/events/' + eventid + '/participants/' + participantid);
+            const response = await axios.get<Participant>(BaseUrl + eventid + '/participants/' + participantid);
             this.participant = response.data;
         } catch (e) {
             alert("error loading participant");
@@ -96,7 +98,7 @@ export default class EditParticipant extends Vue {
             const myevent: Event = new Event(eventid, null, null, null, null);
             const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
             paymentmethodinput, detailsinput, 'person', myevent);
-            const response = await axios.put<Participant>('https://localhost:5001/api/events/' + eventid + '/participants/' + participantid, inputperson);    
+            const response = await axios.put<Participant>(BaseUrl + eventid + '/participants/' + participantid, inputperson);    
         } catch (e) {
             alert("error updating participant");
         }
@@ -115,7 +117,7 @@ export default class EditParticipant extends Vue {
         const inputcompany = new Participant(0, firstnameinput, '', idcodeinput, numparticipantsinput,
         paymentmethodinput, detailsinput, 'company', myevent);
 
-        const response = await axios.put<Participant>('https://localhost:5001/api/events/' + eventid + '/participants/' + participantid, inputcompany);
+        const response = await axios.put<Participant>(BaseUrl + eventid + '/participants/' + participantid, inputcompany);
                 
     }
 }

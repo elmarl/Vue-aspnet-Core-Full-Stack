@@ -22,16 +22,16 @@
                 <v-col cols="6">
                     <v-card class="pa-2" outlined tile>
                         <div class="center-text bkg">Tulevased uritused</div>
-                        <div v-bind:key="i.id" v-for="i in events">
-                            <Event_comp :eventitem="i" :ispastevent="false" v-on:del_item="del_item" v-on:edit_item="edit_item"/>
+                        <div v-bind:key="i.id" v-for="(i, index) in events">
+                            <Event_comp :eventitem="i" :index="index + 1" v-show="showefutureevent(i)" :ispastevent="false" v-on:del_item="del_item" v-on:edit_item="edit_item"/>
                         </div>
                     </v-card>
                 </v-col>
                 <v-col cols="6">
                     <v-card class="pa-2" outlined tile>
                         <div class="center-text bkg">Toimunud uritused</div>
-                        <div v-bind:key="i.id" v-for="i in events">
-                            <Event_comp :eventitem="i" :ispastevent="true" v-on:del_item="del_item" v-on:edit_item="edit_item" />
+                        <div v-bind:key="i.id" v-for="(i, index) in events">
+                            <Event_comp :eventitem="i" :index="index + 1" v-show="showepastevent(i)" v-bind:ispastevent="true" v-on:del_item="del_item" v-on:edit_item="edit_item" />
                         </div>
                     </v-card>
                 </v-col>
@@ -44,6 +44,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Event_comp from '@/components/Event_comp.vue';
 import { Event } from '../models/Event';
 import axios from 'axios';
+import BaseUrl from '../NewFolder/BaseUrl';
 
 @Component({
   components: {
@@ -60,7 +61,7 @@ export default class Home extends Vue {
   }
     private async fetchEvents() { 
         try {
-            const response = await axios.get<Event[]>('api/Events');
+            const response = await axios.get<Event[]>(BaseUrl);
             const res = response.data;
             for (let i = 0; i < res.length; i++) {
                 this.events.push(new Event(res[i].eventid, res[i].eventName,
@@ -71,17 +72,29 @@ export default class Home extends Vue {
         }
     }
     private async del_item(id: number) {
-        // delete on front end
-        const index: number = this.events.findIndex((x) => x.eventid === id);
-        this.events.splice(index, 1);
         // delete on back end using path: 'api/Events/{id}
         try {
-            const path: string = 'api/Events/';
+            const path: string = BaseUrl;
             const url: string = path.concat(id.toString());
             const response = await axios.delete(url); // axios.get<Events[]>('api/Events');
-            // this.events = response.data;
+            // delete on front end
+            const index: number = this.events.findIndex((x) => x.eventid === id);
+            this.events.splice(index, 1);
         } catch (e) {
             alert('Error deleting event');
+        }
+    }
+    private showepastevent(i: Event) {
+        let nowDate: Date = new Date();
+        if (new Date(i.eventDate || '') < nowDate) {
+            return true;
+        }
+    }
+    private showefutureevent(i: Event) {
+        let nowDate: Date = new Date();
+        alert(i.eventDate || '');
+        if (new Date(i.eventDate || '') > nowDate) {
+            return true;
         }
     }
     private edit_item(id: number) {

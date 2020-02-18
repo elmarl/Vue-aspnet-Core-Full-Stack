@@ -3,11 +3,11 @@
       <v-row class="" no-gutters>
       <v-col>
         <span class="" tile>
-            {{eventitem["eventName"]}}
+            {{index}}: {{eventitem["eventName"]}}
         </span>
       </v-col>
           <v-col>
-              <span class="" tile>
+              <span tile>
                   {{formatdate}}
               </span>
       </v-col>
@@ -15,8 +15,8 @@
               <router-link :to="routemsg" tag="button">Osav6tjad</router-link>
         <!--<v-btn @click="$emit('edit_item', eventitem['id'])" to=eventitem["id"] depressed small>Osav6tjad</v-btn>-->
       </v-col>
-          <v-col>
-        <v-btn :required="ispastevent ? false : true" id="deletebtn" @click="$emit('del_item', eventitem['eventid'])" depressed small>delete</v-btn>
+      <v-col v-show="!ispastevent">
+        <v-btn id="deletebtn" @click="$emit('del_item', eventitem['eventid'])" depressed small>delete</v-btn>
       </v-col>
     </v-row>
   </div>
@@ -28,6 +28,7 @@ export default {
   props: {
       eventitem: Object,
       ispastevent: Boolean,
+      index: Number,
   },
   computed: {
     routemsg: function() {

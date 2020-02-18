@@ -12,14 +12,10 @@ namespace AspNetCoreVueStarter.CustomValidation
         {
             return "Kuupäev peab olema tulevikus";
         }
-
-        protected override ValidationResult IsValid(object objValue,
-                                                       ValidationContext validationContext)
+        protected override ValidationResult IsValid(object objValue, ValidationContext validationContext)
         {
+            // Validate if entered date is in the future
             var dateValue = objValue as DateTime? ?? new DateTime();
-
-            //alter this as needed. I am doing the date comparison if the value is not null
-
             if (dateValue.Date < DateTime.Now.Date)
             {
                 return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
