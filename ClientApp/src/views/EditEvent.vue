@@ -4,7 +4,7 @@
 -->
 <template>
     <v-container fluid fill-height class="container sheet">
-        <h2 class="container">Yritus</h2>
+        <h2 class="container blue-text">Yritus</h2>
         <div class="container col-sm-6 myrow">
             <div class="row">
                 <span class="col">Urituse nimi</span>
@@ -23,7 +23,7 @@
                 <span class="col">{{eventitem.details}}</span>
             </div>
         </div>
-        <h2 class="container">Osalejad</h2>
+        <h2 class="container blue-text">Osalejad</h2>
             <table class="container col-sm-4 offset-sm-3">
                 <tr v-bind:key="i.id" v-for="i in participantlist">
                     <td class="col">
@@ -38,7 +38,7 @@
                     </td>
                 </tr>
             </table>
-        <h2 class="container">Osaleja lisamine</h2>
+        <h2 class="container blue-text">Osaleja lisamine</h2>
         <!--Choose either to fill in a form for individuals or for companies-->
         <div class="container col-sm-2 offset-sm-6">
             <div class="row">
@@ -129,12 +129,12 @@ private async fetchEvent() {
         const res = response.data;
         this.eventitem = new Event(res.eventid, res.eventName, res.eventDate, res.location, res.details);
     } catch (e) {
-        alert("failed fetch")
+        alert('failed fetch');
     }
 }
 private async fetchParticipants() {
     try {
-        const response = await axios.get<Participant[]>(BaseUrl + this.eventitem.eventid + '/participants');
+        const response = await axios.get<Participant[]>(BaseUrl.concat(this.eventitem.eventid.toString()).concat('/participants'));
         const res = response.data;
         const myevent: Event = new Event(this.eventitem.eventid, '', '', '', '');
         this.participantlist = [];
@@ -143,7 +143,7 @@ private async fetchParticipants() {
                 res[i].idcode, res[i].numParticipants, res[i].paymentmethod, res[i].details, res[i].participantType, myevent));
         }
     } catch (e) {
-        alert("failed fetch")
+        alert('failed fetch');
     }
 }
 // submit person form
@@ -158,14 +158,13 @@ private async submitperson() {
     const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
         paymentmethodinput, detailsinput, 'person', myevent);
     try {
-        const result: any = await axios.post(BaseUrl + this.eventitem.eventid + '/participants', inputperson);
+        const result: any = await axios.post(BaseUrl.concat(this.eventitem.eventid.toString()).concat('/participants'), inputperson);
     } catch (e) {
         alert('error posting data');
     }
     this.fetchParticipants();
-    //this.$router.push('/');
 }
-// submit entity (business, corporation ...) form
+    // submit entity (business, corporation ...) form
 private async submitcompany() {
     // ignore id when posting a new event, using undefined
     const nameinput = (document.getElementById('name') as HTMLInputElement).value;
@@ -177,17 +176,18 @@ private async submitcompany() {
     const inputcompany = new Participant(0, nameinput, '', idcodeinput, numparticipants,
         paymentmethodinput, detailsinput, 'company', myevent);
     try {
-        const result: any = axios.post(BaseUrl + this.eventitem.eventid + '/participants', inputcompany);
+        const result: any = axios.post(BaseUrl.concat(
+            this.eventitem.eventid.toString()).concat('/participants'), inputcompany);
     }
     catch (e) {
         alert('error posting data');
     }
     this.fetchParticipants();
-    //this.$router.push('/');
 }
-private deleteparticipant(p: Participant){
+private deleteparticipant(p: Participant) {
     try {
-        const result: any = axios.delete(BaseUrl + this.eventitem.eventid + '/participants/'.concat(p.participantid.toString()));
+        const result: any = axios.delete(BaseUrl.concat(
+            this.eventitem.eventid.toString()).concat('/participants/').concat(p.participantid.toString()));
     }
     catch (e) {
         alert('error deleting participant');
@@ -197,7 +197,7 @@ private deleteparticipant(p: Participant){
 }
 // format date to human readable form
     private formatdate(): string {
-    if (this.eventitem.eventDate == '') {
+    if (this.eventitem.eventDate === '') {
         return '';
     }
     const today = new Date(this.eventitem.eventDate || '');
@@ -214,17 +214,17 @@ private deleteparticipant(p: Participant){
     }
     return mm + '-' + dd + '-' + yyyy;
 }
-private formatname(p: Participant){
-    if (p.participantType == 'person') {
-        return p.firstname.concat(" ").concat(p.familyname);
+private formatname(p: Participant) {
+    if (p.participantType === 'person') {
+        return p.firstname.concat(' ').concat(p.familyname);
     } else {
-        //otherwise its 'company'
+        // otherwise its 'company'
         return p.firstname;
     }
 }
 // format route path for participant details
 private formatroute(participant: number): string {
-    return '/uritus/' + this.eventitem.eventid.toString() + '/osaleja/' + participant;
+    return '/uritus/'.concat(this.eventitem.eventid.toString()).concat('/osaleja/').concat(participant.toString());
 }
 // toggle between the two forms using vanilla js
 private toggleform(form: string): void {
@@ -251,5 +251,8 @@ private toggleform(form: string): void {
     .sheet{
         background-color:white;
         margin-top: 10px;
+    }
+    .blue-text{
+        color:midnightblue;
     }
 </style>

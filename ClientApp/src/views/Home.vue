@@ -22,16 +22,16 @@
                 <v-col cols="6">
                     <v-card class="pa-2" outlined tile>
                         <div class="center-text bkg">Tulevased uritused</div>
-                        <div v-bind:key="i.id" v-for="(i, index) in events">
-                            <Event_comp :eventitem="i" :index="index + 1" v-show="showefutureevent(i)" :ispastevent="false" v-on:del_item="del_item" v-on:edit_item="edit_item"/>
+                        <div v-bind:key="i.id" v-for="(i, index) in computefutureevent('future')">
+                            <Event_comp :eventitem="i" :index="index + 1" :ispastevent="false" v-on:del_item="del_item" v-on:edit_item="edit_item"/>
                         </div>
                     </v-card>
                 </v-col>
                 <v-col cols="6">
                     <v-card class="pa-2" outlined tile>
                         <div class="center-text bkg">Toimunud uritused</div>
-                        <div v-bind:key="i.id" v-for="(i, index) in events">
-                            <Event_comp :eventitem="i" :index="index + 1" v-show="showepastevent(i)" v-bind:ispastevent="true" v-on:del_item="del_item" v-on:edit_item="edit_item" />
+                        <div v-bind:key="i.id" v-for="(i, index) in computefutureevent('past')">
+                            <Event_comp :eventitem="i" :index="index + 1" v-bind:ispastevent="true" v-on:del_item="del_item" v-on:edit_item="edit_item" />
                         </div>
                     </v-card>
                 </v-col>
@@ -58,8 +58,8 @@ export default class Home extends Vue {
 
     private async created() {
         await this.fetchEvents();
-  }
-    private async fetchEvents() { 
+    }
+    private async fetchEvents() {
         try {
             const response = await axios.get<Event[]>(BaseUrl);
             const res = response.data;
@@ -76,7 +76,7 @@ export default class Home extends Vue {
         try {
             const path: string = BaseUrl;
             const url: string = path.concat(id.toString());
-            const response = await axios.delete(url); // axios.get<Events[]>('api/Events');
+            const response = await axios.delete(url);
             // delete on front end
             const index: number = this.events.findIndex((x) => x.eventid === id);
             this.events.splice(index, 1);
@@ -84,17 +84,27 @@ export default class Home extends Vue {
             alert('Error deleting event');
         }
     }
-    private showepastevent(i: Event) {
-        let nowDate: Date = new Date();
-        if (new Date(i.eventDate || '') < nowDate) {
-            return true;
+    private computefutureevent(temp: string) {
+        if (temp === 'future') {
+            return this.events.filter(this.computefuturestatus);
+        } else if (temp === 'past') {
+            return this.events.filter(this.computepaststatus);
         }
     }
-    private showefutureevent(i: Event) {
-        let nowDate: Date = new Date();
-        alert(i.eventDate || '');
-        if (new Date(i.eventDate || '') > nowDate) {
+    private computepaststatus(item: Event) {
+        const nowDate: Date = new Date();
+        if (new Date(item.eventDate || '') < nowDate) {
             return true;
+        } else {
+            return false;
+        }
+    }
+    private computefuturestatus(item: Event) {
+        const nowDate: Date = new Date();
+        if (new Date(item.eventDate || '') > nowDate) {
+            return true;
+        } else {
+            return false;
         }
     }
     private edit_item(id: number) {

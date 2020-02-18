@@ -65,7 +65,7 @@
             const formatted_date: string = y + '-' + m + '-' + d + time;
             return formatted_date;
         }
-        public async submit() {
+        private async submit() {
             const nameinput = (document.getElementById('name') as HTMLInputElement).value;
             const dateinput = (document.getElementById('date') as HTMLInputElement).value;
             const locationinput = (document.getElementById('location') as HTMLInputElement).value;
@@ -79,7 +79,7 @@
             catch(e) {
                 alert('error posting data');
             }
-            this.$router.push("/");
+            this.$router.push('/');
         }
     }
 </script>

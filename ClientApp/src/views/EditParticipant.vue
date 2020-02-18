@@ -1,6 +1,6 @@
 ﻿<template>
     <v-container fluid fill-height class="container sheet" style="">
-        <h2 class="container">Osaleja</h2>
+        <h2 class="container blue-text">Osaleja</h2>
         <div id="personform" style="display:none" class="container col-sm-6 myrow">
             <div class="row">
                 <span class="col">Eesnimi</span>
@@ -61,29 +61,30 @@ import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
 import { Participant } from '../models/Participant';
 import { Event } from '../models/Event';
-import BaseUrl from '../NewFolder/BaseUrl'
+import BaseUrl from '../NewFolder/BaseUrl';
 
 @Component
 export default class EditParticipant extends Vue {
-    private participant: Participant = new Participant(0,'','','',0,'','','', new Event(0, '','','',''));
+    private participant: Participant = new Participant(0, '', '', '', 0, '', '', '', new Event(0, '', '', '', ''));
     private async created() {
     await this.fetchParticipant();
   }
 
     private async fetchParticipant() {
-        try {const eventid = window.location.href.split('/').slice(-3)[0];
+        try {
+            const eventid = window.location.href.split('/').slice(-3)[0];
             const participantid = window.location.href.split('/').slice(-1)[0];
-            const response = await axios.get<Participant>(BaseUrl + eventid + '/participants/' + participantid);
+            const response = await axios.get<Participant>(
+                BaseUrl.concat(eventid).concat('/participants/').concat(participantid));
             this.participant = response.data;
         } catch (e) {
-            alert("error loading participant");
+            alert('error loading participant');
         }
-        if (this.participant.participantType == 'company') {
+        if (this.participant.participantType === 'company') {
             (document.getElementById('companyform') as HTMLDivElement).style.display = 'block';
         } else {
             (document.getElementById('personform') as HTMLDivElement).style.display = 'block';
         }
-        
     }
     private async savePersonChanges() {
         try {
@@ -97,17 +98,17 @@ export default class EditParticipant extends Vue {
             const detailsinput = (document.getElementById('persondetails') as HTMLTextAreaElement).value;
             const myevent: Event = new Event(eventid, null, null, null, null);
             const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
-            paymentmethodinput, detailsinput, 'person', myevent);
-            const response = await axios.put<Participant>(BaseUrl + eventid + '/participants/' + participantid, inputperson);    
+                paymentmethodinput, detailsinput, 'person', myevent);
+            const response = await axios.put<Participant>(
+                BaseUrl.concat(eventid.toString()).concat('/participants/').concat(participantid), inputperson);
         } catch (e) {
-            alert("error updating participant");
+            alert('error updating participant');
         }
         history.go(-1);
     }
     private async saveCompanyChanges() {
         const eventid = parseInt(window.location.href.split('/').slice(-3)[0], 10);
         const participantid = window.location.href.split('/').slice(-1)[0];
-
         const firstnameinput = (document.getElementById('companyname') as HTMLInputElement).value;
         const numparticipantsinput = parseInt((document.getElementById('companynumparticipants') as HTMLInputElement).value, 10);
         const idcodeinput = (document.getElementById('companyidcode') as HTMLInputElement).value;
@@ -116,9 +117,8 @@ export default class EditParticipant extends Vue {
         const myevent: Event = new Event(eventid, null, null, null, null);
         const inputcompany = new Participant(0, firstnameinput, '', idcodeinput, numparticipantsinput,
         paymentmethodinput, detailsinput, 'company', myevent);
-
-        const response = await axios.put<Participant>(BaseUrl + eventid + '/participants/' + participantid, inputcompany);
-                
+        const response = await axios.put<Participant>(
+            BaseUrl.concat(eventid.toString()).concat('/participants/').concat(participantid), inputcompany);
     }
 }
 </script>
@@ -136,5 +136,8 @@ export default class EditParticipant extends Vue {
     .sheet{
         background-color:white;
         margin-top: 10px;
+    }
+    .blue-text{
+        color:midnightblue;
     }
 </style>

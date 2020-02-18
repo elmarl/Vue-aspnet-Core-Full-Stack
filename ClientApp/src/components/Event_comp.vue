@@ -12,7 +12,7 @@
               </span>
       </v-col>
           <v-col>
-              <router-link :to="routemsg" tag="button">Osav6tjad</router-link>
+              <router-link :to="routemsg" tag="button">Osavotjad</router-link>
         <!--<v-btn @click="$emit('edit_item', eventitem['id'])" to=eventitem["id"] depressed small>Osav6tjad</v-btn>-->
       </v-col>
       <v-col v-show="!ispastevent">
@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     routemsg: function() {
-        return '/uritus/' + this.eventitem.eventid.toString();
+        return '/uritus/'.concat(this.eventitem.eventid.toString());
      },
       formatdate: function() {
             const today = new Date(this.eventitem.eventDate);
@@ -45,7 +45,7 @@ export default {
             {mm = '0' + mm; }
             return mm + '-' + dd + '-' + yyyy;
       },
-  },
+   },
 };
 </script>
 
