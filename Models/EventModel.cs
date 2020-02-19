@@ -2,13 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace AspNetCoreVueStarter.Models
 {
-    public class EventsModel
+    public class EventModel
     {
         [Key]
         public int Eventid { get; set; }

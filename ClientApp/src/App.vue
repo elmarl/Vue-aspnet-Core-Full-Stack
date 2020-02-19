@@ -1,12 +1,12 @@
-<template>
+ï»¿<template>
     <v-app id="scene">
         <v-app-bar id="navbar" class="container table" :clipped-left="clipped" elevation="0">
             <img src="../public/img/icons/logo.svg" class="column"/>
                 <v-spacer></v-spacer>
                     <v-btn id="navbtn" class="column" value="true" v-for="(item, i) in items" :key="i" :to="item.link">
-                        <v-list-item-content>
-                            <v-list-item-title v-text="item.title"></v-list-item-title>
-                        </v-list-item-content>
+                        <div>
+                            <span v-text="item.title"></span>
+                        </div>
                     </v-btn>
                 <v-spacer></v-spacer><v-spacer></v-spacer>
             <img src="../public/img/icons/symbol.svg" class="column" />
@@ -42,7 +42,7 @@
                             <ul>
                                 <li><h2>Pealkiri</h2></li>
                                 <li>Peakontor: Tallinnas</li>
-                                <li>Väike-Ameerika 1, 11415 Tallinn</li>
+                                <li>VÃ¤ike-Ameerika 1, 11415 Tallinn</li>
                                 <li>Telefon: 605 4450</li>
                                 <li>Faks 605 4450</li>
                             </ul>
@@ -50,8 +50,8 @@
                         <td>
                             <ul>
                                 <li><h2 style="visibility:hidden">hidden</h2></li>
-                                <li>Harukontor: Võrus</li>
-                                <li>Oja tn 7 (külastusaadress)</li>
+                                <li>Harukontor: VÃµrus</li>
+                                <li>Oja tn 7 (kÃ¼lastusaadress)</li>
                                 <li>Telefon: 605 3330</li>
                                 <li>Faks: 605 3155</li>
                             </ul>
@@ -76,19 +76,19 @@ export default class App extends Vue {
   private title: string = 'ASP.NET Core Vue Starter';
   private items = [
     { title: 'Home', icon: 'home', link: '/' },
-    { title: 'Urituse lisamine', icon: 'touch_app', link: '/lisauritus' },
+    { title: 'Ãœrituse lisamine', icon: 'touch_app', link: '/lisauritus' },
   ];
 }
 </script>
 
 <style scoped>
     * {
-        font-family:'Times New Roman';
+        font-family:'Arial, Helvetica, sans-serif';
     }
 .vue-footer { 
      position: relative;
      bottom: 0;
-     background-color:white;
+     background-color:aliceblue;
 }
 li {
     list-style: none;
@@ -112,13 +112,13 @@ li {
     height:inherit;
     border-radius: 0px;
     background-color: white;
-    color: midnightblue;
+    color: royalblue;
     box-shadow:none;
 }
-.v-btn--active {
-    background-color: midnightblue;
-    color: white;
+#navbtn:active {
+    color:royalblue;
 }
+
 #navbar{
     background-color:white;
 }

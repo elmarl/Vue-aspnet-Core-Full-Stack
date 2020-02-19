@@ -19,16 +19,16 @@ namespace AspNetCoreVueStarter.Controllers
         // Get all events
         // GET: api/Events
         [HttpGet]
-        public ActionResult<IEnumerable<EventsModel>> GetEventModel()
+        public ActionResult<IEnumerable<EventModel>> GetEventModel()
         {
             return _service.GetEvents();
         }
         // Get specific event by id
         // GET: api/Events/5
         [HttpGet("{id}")]
-        public ActionResult<EventsModel> GetEventModel(int id)
+        public ActionResult<EventModel> GetEventModel(int id)
         {
-            EventsModel item = _service.GetEvent(id);
+            EventModel item = _service.GetEvent(id);
             if (item != null)
             {
                 return _service.GetEvent(id);
@@ -41,7 +41,7 @@ namespace AspNetCoreVueStarter.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public ActionResult<EventsModel> PostEventModel(EventsModel eventModel)
+        public ActionResult<EventModel> PostEventModel(EventModel eventModel)
         {
             if (eventModel != null && ModelState.IsValid)
             {
@@ -55,9 +55,9 @@ namespace AspNetCoreVueStarter.Controllers
         }
         // DELETE: api/Events/5
         [HttpDelete("{id}")]
-        public ActionResult<EventsModel> DeleteEventModel(int id)
+        public ActionResult<EventModel> DeleteEventModel(int id)
         {
-            EventsModel eventsModel = _service.DeleteEvent(id);
+            EventModel eventsModel = _service.DeleteEvent(id);
             if (eventsModel == null)
             {
                 return NotFound();
@@ -72,8 +72,14 @@ namespace AspNetCoreVueStarter.Controllers
         {
             if (pModel != null && ModelState.IsValid)
             {
-                _service.AddParticipant(id, pModel);
-                return CreatedAtAction("GetEventModel", new { id = pModel.Participantid }, pModel);
+               ParticipantModel pm = _service.AddParticipant(id, pModel);
+                if (pm != null)
+                {
+                    return CreatedAtAction("GetEventModel", new { id = pModel.Participantid }, pModel);
+                } else
+                {
+                    return BadRequest();
+                }
             } else {
                 return BadRequest();
             }

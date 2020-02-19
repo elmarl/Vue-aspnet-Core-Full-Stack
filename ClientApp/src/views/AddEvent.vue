@@ -8,36 +8,36 @@
             <v-row no-gutters class="subheader">
                 <v-col cols="4">
                     <div class="pa-2">
-                        Urituse Lisamine
+                        <h2 class="notbold">Ürituse Lisamine</h2>
                     </div>
                 </v-col>
                 <v-col cols="8">
-                    <div class="pa-2">
+                    <div class="pa-0">
                         <v-img class="subheaderimg" src="../assets/libled.jpg"></v-img>
                     </div>
                 </v-col>
             </v-row>
-            <h2 class="col-sm-6 offset-sm-2 blue-text">Urituse lisamine</h2>
-            <form class="form-horizontal col-sm-6 offset-sm-4" @submit.prevent="">
-                <div class="form-group row">
-                    <label class="control-label col-sm-2" for="name">Nimi</label>
-                    <input type="text" class="form-control col-sm-8" id="name" name="name" style="border-style:ridge" v-on:keydown.enter.prevent="" required>
+            <h2 class="col-sm-6 blue-text">Ürituse lisamine</h2>
+            <form class="form-horizontal col-sm-6 offset-sm-2" @submit.prevent="">
+                <div class=" row pa-1">
+                    <label class="col pa-1" for="name">Nimi</label>
+                    <input type="text" class=" col pa-1" id="name" name="name" style="border-style:ridge" v-on:keydown.enter.prevent="submit()" required>
                 </div>
-                <div class="form-group row">
-                    <label class="control-label col-sm-2" for="date">Kuupaev:</label>
-                    <input type="datetime-local" class="form-control col-sm-8" v-bind:min="getTime()" id="date" style="border-style:ridge" v-on:keydown.enter.prevent="" required>
+                <div class=" row pa-1">
+                    <label class=" col pa-1" for="date">Kuupäev:</label>
+                    <input type="datetime-local" class=" col pa-1" v-bind:min="getTime()" id="date" style="border-style:ridge" v-on:keydown.enter.prevent="submit()" required>
                 </div>
-                <div class="form-group row">
-                    <label class="control-label col-sm-2" for="location">Koht</label>
-                    <input type="text" class="form-control col-sm-8" id="location" name="location" style="border-style:ridge" v-on:keydown.enter.prevent="" required>
+                <div class=" row pa-1">
+                    <label class="col pa-1" for="location">Koht</label>
+                    <input type="text" class=" col pa-1" id="location" name="location" style="border-style:ridge" v-on:keydown.enter.prevent="submit()" required>
                 </div>
-                <div class="form-group row">
-                    <label class="control-label col-sm-2" for="details">Lisainfo</label>
-                    <textarea type="text" class="form-control col-sm-8" id="details" name="details" style="border-style:ridge" v-on:keydown.enter.prevent=""></textarea>
+                <div class=" row pa-1">
+                    <label class=" col pa-1" for="details">Lisainfo</label>
+                    <textarea type="text" class="col pa-1" id="details" name="details" style="border-style:ridge" v-on:keydown.enter.prevent="submit()"></textarea>
                 </div>
-                <div class="form-group row">
-                    <router-link to="/" tag="button" class="col-sm-2">Tagasi</router-link>
-                    <input type="submit" class="form-control col-sm-8" @click.stop.prevent="submit()">
+                <div class="row pa-1">
+                    <router-link to="/" tag="button" class="col pa-1">Tagasi</router-link>
+                    <input type="submit" class="col blue-text pa-1" @click.stop.prevent="submit()" value="Lisa">
                     <!-- @click.stop.prevent="submit()"-->
                 </div>
             </form>
@@ -48,7 +48,7 @@
     import { Component, Vue } from 'vue-property-decorator';
     import { Event } from '../models/Event';
     import axios from 'axios';
-    import BaseUrl from '../NewFolder/BaseUrl';
+    import BaseUrl from '../BaseUrl/BaseUrl';
 
     @Component({})
     export default class FetchDataView extends Vue {
@@ -78,6 +78,7 @@
             }
             catch(e) {
                 alert('error posting data');
+                return;
             }
             this.$router.push('/');
         }
@@ -94,15 +95,21 @@
         margin-top: 10px;
     }
     .blue-text{
-        color:midnightblue;
+        color:royalblue;
     }
     .subheader{
         padding:0px;
         margin:0px;
         width:auto;
+        background-color:royalblue;
+        color:white;
     }
     .subheaderimg {
         width:100%;
-        max-height:40px
+        max-height:65px
+    }
+    .notbold {
+        font-weight:normal;
+        line-height:45px;
     }
 </style>

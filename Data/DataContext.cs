@@ -9,15 +9,15 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AspNetCoreVueStarter.Data
 {
     //Database representational model
-    public class DataContext : DbContext
+    public class DataContext : DbContext, IDataContext
     {
-        public DataContext (DbContextOptions<DataContext> options)
+        public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
         }
 
-        public DbSet<AspNetCoreVueStarter.Models.EventsModel> EventModel { get; set; }
-        public DbSet<AspNetCoreVueStarter.Models.ParticipantModel> ParticipantModel { get; set; }
+        public DbSet<EventModel> EventModel { get; set; }
+        public DbSet<ParticipantModel> ParticipantModel { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

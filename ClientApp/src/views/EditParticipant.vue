@@ -1,6 +1,6 @@
 ﻿<template>
     <v-container fluid fill-height class="container sheet" style="">
-        <h2 class="container blue-text">Osaleja</h2>
+        <h2 class="container blue-text offset-sm-2">Osaleja</h2>
         <div id="personform" style="display:none" class="container col-sm-6 myrow">
             <div class="row">
                 <span class="col">Eesnimi</span>
@@ -16,7 +16,7 @@
             </div>
             <div class="row">
                 <span class="col">Maksmisviis</span>
-                <select class="col" id="personpaymentmethod" :value="participant.paymentmethod"><option>Sularaha</option><option>Kaardimakse</option></select>
+                <select class="col" id="personpaymentmethod" :value="participant.paymentmethod"><option>Sularaha</option><option>Pangaülekanne</option></select>
             </div>
             <div class="row">
                 <span class="col">Lisainfo</span>
@@ -42,7 +42,7 @@
             </div>
             <div class="row">
                 <span class="col">Maksmisviis</span>
-                <select class="col" id="companypaymentmethod" :value="participant.paymentmethod"><option>Sularaha</option><option>Kaardimakse</option></select>
+                <select class="col" id="companypaymentmethod" :value="participant.paymentmethod"><option>Sularaha</option><option>Pangaülekanne</option></select>
             </div>
             <div class="row">
                 <span class="col">Lisainfo</span>
@@ -61,7 +61,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
 import { Participant } from '../models/Participant';
 import { Event } from '../models/Event';
-import BaseUrl from '../NewFolder/BaseUrl';
+import BaseUrl from '../BaseUrl/BaseUrl';
 
 @Component
 export default class EditParticipant extends Vue {
@@ -138,6 +138,6 @@ export default class EditParticipant extends Vue {
         margin-top: 10px;
     }
     .blue-text{
-        color:midnightblue;
+        color:royalblue;
     }
 </style>

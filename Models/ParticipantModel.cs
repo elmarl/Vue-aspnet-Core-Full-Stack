@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AspNetCoreVueStarter.CustomValidation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,6 +20,7 @@ namespace AspNetCoreVueStarter.Models
         [StringLength(50, ErrorMessage = "Maksimaalselt 50 tähemärki")]
         public string? Familyname { get; set; }
         [Required]
+        [MyNumber]
         [Column("code")]
         [StringLength(50, ErrorMessage = "Maksimaalselt 50 tähemärki")]
         public string Idcode { get; set; }
@@ -30,6 +32,6 @@ namespace AspNetCoreVueStarter.Models
         [Required]
         public string ParticipantType { get; set; }
         [JsonIgnore]
-        public EventsModel EventModel { get; set; }
+        public EventModel EventModel { get; set; }
     }
 }

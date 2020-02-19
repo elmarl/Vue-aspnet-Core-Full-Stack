@@ -3,17 +3,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AspNetCoreVueStarter.CustomValidation
 {
-    public class MyDateAttribute : ValidationAttribute
+    // Custom Number validator, 
+    public class MyNumberAttribute : ValidationAttribute
     {
         public override string FormatErrorMessage(string name)
         {
-            return "Kuupäev peab olema tulevikus";
+            return "Kood peab olema numbrites";
         }
         protected override ValidationResult IsValid(object objValue, ValidationContext validationContext)
         {
-            // Validate if entered date is in the future
-            var dateValue = objValue as DateTime? ?? new DateTime();
-            if (dateValue.Date < DateTime.Now.Date)
+            // Validate if entered id code is a number
+            bool isNumber = int.TryParse(objValue as string, out _);
+            if (!isNumber)
             {
                 return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             }

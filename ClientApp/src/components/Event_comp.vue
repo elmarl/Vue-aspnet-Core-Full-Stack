@@ -2,22 +2,22 @@
   <div>
       <v-row class="" no-gutters>
       <v-col>
-        <span class="" tile>
-            {{index}}: {{eventitem["eventName"]}}
-        </span>
-      </v-col>
+          <span class="" tile>
+              {{index}}: {{eventitem["eventName"]}}
+          </span>
+          </v-col>
           <v-col>
               <span tile>
                   {{formatdate}}
               </span>
-      </v-col>
+          </v-col>
           <v-col>
-              <router-link :to="routemsg" tag="button">Osavotjad</router-link>
-        <!--<v-btn @click="$emit('edit_item', eventitem['id'])" to=eventitem["id"] depressed small>Osav6tjad</v-btn>-->
-      </v-col>
-      <v-col v-show="!ispastevent">
-        <v-btn id="deletebtn" @click="$emit('del_item', eventitem['eventid'])" depressed small>delete</v-btn>
-      </v-col>
+              <v-btn :to="routemsg" depressed small>Osavõtjad</v-btn>
+              <!--<router-link :to="routemsg" tag="button">Osavõtjad</router-link>-->
+          </v-col>
+          <v-col v-show="!ispastevent">
+            <v-btn id="deletebtn" @click="$emit('del_item', eventitem['eventid'])" depressed small>Eemalda</v-btn>
+          </v-col>
     </v-row>
   </div>
 </template>

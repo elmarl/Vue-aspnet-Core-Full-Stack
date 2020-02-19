@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AspNetCoreVueStarter.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreVueStarter.Service
 {
@@ -21,7 +19,7 @@ namespace AspNetCoreVueStarter.Service
         }
         // All Event table related actions
         // Get all the events, if no events in the database return an empty array
-        public List<EventsModel> GetEvents()
+        public List<EventModel> GetEvents()
         {
             if (_context.EventModel != null)
             {
@@ -29,21 +27,21 @@ namespace AspNetCoreVueStarter.Service
             }
             else
             {
-                return new List<EventsModel>();
+                return new List<EventModel>();
             }
         }
-        public EventsModel GetEvent(int id)
+        public EventModel GetEvent(int id)
         {
             return _context.EventModel.Find(id);
         }
-        public void AddEvent(EventsModel eventModel)
+        public void AddEvent(EventModel eventModel)
         {
             _context.EventModel.Add(eventModel);
             _context.SaveChanges();
         }
-        public EventsModel DeleteEvent(int id)
+        public EventModel DeleteEvent(int id)
         {
-            EventsModel eventsModel = _context.EventModel.Find(id);
+            EventModel eventsModel = _context.EventModel.Find(id);
             if (eventsModel == null)
             {
                 return null;
@@ -84,10 +82,10 @@ namespace AspNetCoreVueStarter.Service
         // by the model.
         public ParticipantModel AddParticipant(int id, ParticipantModel participantModel)
         {
-            if(participantModel.ParticipantType == "person") {
+            if(participantModel.ParticipantType == "person" && participantModel.Familyname.Length>0) {
                 if (participantModel.Details.Length < 1500)
                 {
-                    EventsModel eventModel = _context.EventModel.Find(id);
+                    EventModel eventModel = _context.EventModel.Find(id);
                     eventModel.Participants.Add(participantModel);
                     _context.SaveChanges();
                     return participantModel;
@@ -97,7 +95,7 @@ namespace AspNetCoreVueStarter.Service
                 }
             } else if (participantModel.ParticipantType == "company")
             {
-                EventsModel eventModel = _context.EventModel.Find(id);
+                EventModel eventModel = _context.EventModel.Find(id);
                 eventModel.Participants.Add(participantModel);
                 _context.SaveChanges();
                 return participantModel;

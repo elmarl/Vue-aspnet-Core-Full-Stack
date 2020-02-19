@@ -1,14 +1,14 @@
-<template>
+﻿<template>
     <v-container fluid fill-height class="container">
-        <v-container class="container">
+        <div class="container">
             <v-layout row>
                 <v-flex xs6 order-lg1>
-                    <v-card dark tile flat color="indigo" class="primary" height="100%">
-                        <v-card-text class="center-text white-text">
+                    <v-card dark tile flat class="primary bkg" height="100%">
+                        <div class="center-text white-text">
                             Lorem ipsum dolor sit amet, <b>consectetur</b> adipiscing elit. Aliquam euismod maximus odio eu vehicula. Nulla feugiat,
                             arcu non sodales varius, leo felis <i><b>faucibus</b></i> lorem, sed convallis odio dolor vitae elit. Sed non orci cursus, varius
                             ante vitae, finibus urna.
-                        </v-card-text>
+                        </div>
                     </v-card>
                 </v-flex>
                 <v-flex xs6 order-lg2>
@@ -17,25 +17,27 @@
                     </v-card>
                 </v-flex>
             </v-layout>
-        </v-container>
-            <v-row>
-                <v-col cols="6">
-                    <v-card class="pa-2" outlined tile>
-                        <div class="center-text bkg">Tulevased uritused</div>
-                        <div v-bind:key="i.id" v-for="(i, index) in computefutureevent('future')">
-                            <Event_comp :eventitem="i" :index="index + 1" :ispastevent="false" v-on:del_item="del_item" v-on:edit_item="edit_item"/>
-                        </div>
-                    </v-card>
-                </v-col>
-                <v-col cols="6">
-                    <v-card class="pa-2" outlined tile>
-                        <div class="center-text bkg">Toimunud uritused</div>
-                        <div v-bind:key="i.id" v-for="(i, index) in computefutureevent('past')">
-                            <Event_comp :eventitem="i" :index="index + 1" v-bind:ispastevent="true" v-on:del_item="del_item" v-on:edit_item="edit_item" />
-                        </div>
-                    </v-card>
-                </v-col>
-            </v-row>
+        </div>
+        <div class="container">
+            <div class="row ">
+                <table class=" col-sm-6 sheet">
+
+                    <th class="center-text bkg">Tulevased üritused</th>
+                    <tr v-bind:key="i.id" v-for="(i, index) in computefutureevent('future')">
+                        <Event_comp :eventitem="i" :index="index + 1" :ispastevent="false" v-on:del_item="del_item" v-on:edit_item="edit_item" />
+                    </tr>
+
+                </table>
+                <table class=" col-sm-6 sheet">
+
+                    <th class="center-text bkg">Toimunud üritused</th>
+                    <tr v-bind:key="i.id" v-for="(i, index) in computefutureevent('past')">
+                        <Event_comp :eventitem="i" :index="index + 1" v-bind:ispastevent="true" v-on:del_item="del_item" v-on:edit_item="edit_item" />
+                    </tr>
+
+                </table>
+            </div>
+        </div>
         </v-container>
 </template>
 
@@ -44,7 +46,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Event_comp from '@/components/Event_comp.vue';
 import { Event } from '../models/Event';
 import axios from 'axios';
-import BaseUrl from '../NewFolder/BaseUrl';
+import BaseUrl from '../BaseUrl/BaseUrl';
 
 @Component({
   components: {
@@ -127,8 +129,14 @@ export default class Home extends Vue {
     .white-text {
          color:white;
     }
-    bkg{
-        background-color: darkcyan;
+    .bkg{
+        color:white;
+        background-color: royalblue;
     }
-
+    .sheet{
+        background-color:white;
+        margin-top: 10px;
+        margin-left: 0px;
+        padding: 0px;
+    }
 </style>

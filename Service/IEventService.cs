@@ -5,12 +5,12 @@ namespace AspNetCoreVueStarter.Service
 {
     public interface IEventService
     {
-        void AddEvent(EventsModel eventModel);
+        void AddEvent(EventModel eventModel);
         ParticipantModel AddParticipant(int id, ParticipantModel participantModel);
-        EventsModel DeleteEvent(int id);
+        EventModel DeleteEvent(int id);
         ParticipantModel DeleteParticipant(int id);
-        EventsModel GetEvent(int id);
-        List<EventsModel> GetEvents();
+        EventModel GetEvent(int id);
+        List<EventModel> GetEvents();
         ParticipantModel GetParticipant(int id);
         List<ParticipantModel> GetParticipants(int id);
         ParticipantModel UpdateParticipant(int id, ParticipantModel participantModel);
