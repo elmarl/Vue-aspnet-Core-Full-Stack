@@ -4,16 +4,14 @@ using AspNetCoreVueStarter.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AspNetCoreVueStarter.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200216153453_InitialCreate")]
-    partial class InitialCreate
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,7 @@ namespace AspNetCoreVueStarter.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AspNetCoreVueStarter.Models.EventsModel", b =>
+            modelBuilder.Entity("AspNetCoreVueStarter.Models.EventModel", b =>
                 {
                     b.Property<int>("Eventid")
                         .ValueGeneratedOnAdd()
@@ -29,8 +27,8 @@ namespace AspNetCoreVueStarter.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Details")
-                        .HasColumnType("nvarchar(1500)")
-                        .HasMaxLength(1500);
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
 
                     b.Property<DateTime>("EventDate")
                         .HasColumnType("datetime2");
@@ -58,11 +56,10 @@ namespace AspNetCoreVueStarter.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Details")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasMaxLength(5000);
 
-                    b.Property<int>("EventModelEventid")
+                    b.Property<int?>("EventModelEventid")
                         .HasColumnType("int");
 
                     b.Property<string>("Familyname")
@@ -101,11 +98,9 @@ namespace AspNetCoreVueStarter.Migrations
 
             modelBuilder.Entity("AspNetCoreVueStarter.Models.ParticipantModel", b =>
                 {
-                    b.HasOne("AspNetCoreVueStarter.Models.EventsModel", "EventModel")
+                    b.HasOne("AspNetCoreVueStarter.Models.EventModel", "EventModel")
                         .WithMany("Participants")
-                        .HasForeignKey("EventModelEventid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventModelEventid");
                 });
 #pragma warning restore 612, 618
         }

@@ -31,6 +31,7 @@ namespace AspNetCoreVueStarter.Models
         public string Details { get; set; }
         [Required]
         public string ParticipantType { get; set; }
+        // JsonIgnore to avoid infinite recursive loop
         [JsonIgnore]
         public EventModel EventModel { get; set; }
     }
