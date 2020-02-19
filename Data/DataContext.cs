@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AspNetCoreVueStarter.Data
 {
     //Database representational model
-    public class DataContext : DbContext, IDataContext
+    public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)

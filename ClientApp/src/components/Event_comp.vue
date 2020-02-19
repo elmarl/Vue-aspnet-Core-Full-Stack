@@ -35,10 +35,10 @@ export default {
         return '/uritus/'.concat(this.eventitem.eventid.toString());
      },
       formatdate: function() {
-            const today = new Date(this.eventitem.eventDate);
-            let dd = today.getDate();
-            let mm = today.getMonth() + 1;
-            const yyyy = today.getFullYear();
+            const eventdate = new Date(this.eventitem.eventDate);
+            let dd = eventdate.getDate();
+            let mm = eventdate.getMonth() + 1;
+            const yyyy = eventdate.getFullYear();
             if (dd < 10) 
             {dd = '0' + dd; }
             if (mm < 10) 

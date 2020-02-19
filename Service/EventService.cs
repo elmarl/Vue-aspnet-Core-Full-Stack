@@ -93,7 +93,7 @@ namespace AspNetCoreVueStarter.Service
                 {
                     return null;
                 }
-            } else if (participantModel.ParticipantType == "company")
+            } else if (participantModel.ParticipantType == "company" && participantModel.NumParticipants != null)
             {
                 EventModel eventModel = _context.EventModel.Find(id);
                 eventModel.Participants.Add(participantModel);
@@ -110,15 +110,32 @@ namespace AspNetCoreVueStarter.Service
             try
             {
                 ParticipantModel originalparticipant = _context.ParticipantModel.FirstOrDefault(o => o.Participantid == id);
-                originalparticipant.Firstname = participantModel.Firstname;
-                originalparticipant.Familyname = participantModel.Familyname;
-                originalparticipant.Idcode = participantModel.Idcode;
-                originalparticipant.NumParticipants = participantModel.NumParticipants;
-                originalparticipant.Details = participantModel.Details;
-                //_context.Entry(originalparticipant).CurrentValues.SetValues(pModel);
-                // _context.Entry<ParticipantModel>(pModel).State = EntityState.Modified;
-                _context.SaveChanges();
-                return participantModel;
+                // participant type is not allowed to change on this site
+                if(originalparticipant.ParticipantType != participantModel.ParticipantType) { return null; }
+
+                // Dont allow family name to be empty on person participants
+                if(participantModel.ParticipantType == "person" && participantModel.Familyname != null && participantModel.Familyname.Length>0 && participantModel.Details.Length<1500) {
+                    originalparticipant.Firstname = participantModel.Firstname;
+                    originalparticipant.Familyname = participantModel.Familyname;
+                    originalparticipant.Idcode = participantModel.Idcode;
+                    originalparticipant.NumParticipants = participantModel.NumParticipants;
+                    originalparticipant.Details = participantModel.Details;
+                    _context.SaveChanges();
+                    return participantModel;
+                } // Dont allow number of participants to be null on company participants
+                else if(participantModel.ParticipantType == "company" && participantModel.NumParticipants != null && participantModel.Details.Length < 5000) {
+                    originalparticipant.Firstname = participantModel.Firstname;
+                    originalparticipant.Familyname = participantModel.Familyname;
+                    originalparticipant.Idcode = participantModel.Idcode;
+                    originalparticipant.NumParticipants = participantModel.NumParticipants;
+                    originalparticipant.Details = participantModel.Details;
+                    _context.SaveChanges();
+                    return participantModel;
+                }
+                else
+                {
+                    return null;
+                }
             } catch (Exception ex)
             {
                 return null;

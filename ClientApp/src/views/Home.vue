@@ -1,4 +1,10 @@
-﻿<template>
+﻿<!--
+                                                // vormi sisestamine toimub 'axios'-t kasutades, teeb GET, POST, PUT ja DELETE http requeste
+    v-on:keydown.enter.prevent="submitperson()" // vormi sisestamisel enter klahviga vaikimisi actioni (post ja refresh) asemel suunab funktsioonile
+    @click.stop.prevent="submitperson()"        // sama mis eelmine, ainult submit nupu hiirega klikkimise jaoks
+    -->
+
+<template>
     <v-container fluid fill-height class="container">
         <div class="container">
             <v-layout row>

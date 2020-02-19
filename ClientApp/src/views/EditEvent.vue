@@ -1,9 +1,25 @@
 ﻿<!--
     companyform - juriidilise isiku vorm
     personform - fuusilise isiku vorm
+
+                                                // vormi sisestamine toimub 'axios'-t kasutades, teeb GET, POST, PUT ja DELETE http requeste
+    v-on:keydown.enter.prevent="submitperson()" // vormi sisestamisel enter klahviga vaikimisi actioni (post ja refresh) asemel suunab funktsioonile
+    @click.stop.prevent="submitperson()"        // sama mis eelmine, ainult submit nupu hiirega klikkimise jaoks
 -->
 <template>
     <v-container fluid fill-height class="container sheet">
+        <v-row no-gutters class="subheader">
+            <v-col cols="4">
+                <div class="pa-2">
+                    <h2 class="notbold">Ürituse info</h2>
+                </div>
+            </v-col>
+            <v-col cols="8">
+                <div class="pa-0">
+                    <v-img class="subheaderimg" src="../assets/libled.jpg"></v-img>
+                </div>
+            </v-col>
+        </v-row>
         <h2 class="container blue-text offset-sm-2">Üritus</h2>
         <div class="container col-sm-6 myrow">
             <div class="row">
@@ -73,37 +89,37 @@
                     <textarea id="details" type="text" class="col pa-1" v-on:keydown.enter.prevent="submitperson()"></textarea>
                 </div>
                 <div class="row pa-1">
-                    <router-link id="routerbtn" to="/" tag="button" class="col pa-1">Tagasi</router-link>
-                    <input type="submit" class="col blue-text pa-1" @click.stop.prevent="submitperson()" value="Lisa">
+                    <router-link to="/" tag="button" class="col pa-1">Tagasi</router-link>
+                    <input type="submit" class="col blue-text pa-1 routerbtn" @click.stop.prevent="submitperson()" value="Lisa">
                 </div>
             </div>
         </form>
         <!--Entity form for companies-->
-        <form class="container form-horizontal" id="companyform" style="display:none;">
+        <form class="container" id="companyform" style="display:none;">
             <div class="container col-sm-6 myrow">
                 <div class="row pa-1">
-                    <label for="name" class="col">Ettevõtte nimi</label>
-                    <input id="name" type="text" name="firstname" class="col" v-on:keydown.enter.prevent="submitcompany()">
+                    <label for="name" class="col pa-1">Ettevõtte nimi</label>
+                    <input id="name" type="text" name="firstname" class="col pa-1" v-on:keydown.enter.prevent="submitcompany()">
                 </div>
                 <div class="row pa-1">
-                    <label for="entityidcode" class="col">Registrikood</label>
-                    <input id="entityidcode" type="text" name="entityidcode" class="col" v-on:keydown.enter.prevent="submitcompany()">
+                    <label for="entityidcode" class="col pa-1">Registrikood</label>
+                    <input id="entityidcode" type="text" name="entityidcode" class="col pa-1" v-on:keydown.enter.prevent="submitcompany()">
                 </div>
                 <div class="row pa-1">
-                    <label for="numparticipants" class="col">Osalejate arv</label>
-                    <input id="numparticipants" type="text" name="numparticipants" class="col" v-on:keydown.enter.prevent="submitcompany()">
+                    <label for="numparticipants" class="col pa-1">Osalejate arv</label>
+                    <input id="numparticipants" type="text" name="numparticipants" class="col pa-1" v-on:keydown.enter.prevent="submitcompany()">
                 </div>
                 <div class="row pa-1">
-                    <label for="entitypaymentmethod" class="col">Maksmisviis</label>
-                    <select id="entitypaymentmethod" class="col" name="entitypaymentmethod" v-on:keydown.enter.prevent="submitcompany()"><option>Sularaha</option><option>Pangaülekanne</option></select>
+                    <label for="entitypaymentmethod" class="col pa-1">Maksmisviis</label>
+                    <select id="entitypaymentmethod" class="col pa-1" name="entitypaymentmethod" v-on:keydown.enter.prevent="submitcompany()"><option>Sularaha</option><option>Pangaülekanne</option></select>
                 </div>
                 <div class="row pa-1">
-                    <label for="entitydetails" class="col">Lisainfo</label>
-                    <textarea id="entitydetails" type="text" class="col" v-on:keydown.enter.prevent="submitcompany()"></textarea>
+                    <label for="entitydetails" class="col pa-1">Lisainfo</label>
+                    <textarea id="entitydetails" type="text" class="col pa-1" v-on:keydown.enter.prevent="submitcompany()"></textarea>
                 </div>
                 <div class="row pa-1">
-                    <router-link id="routerbtn" to="/" tag="button" class="col">Tagasi</router-link>
-                    <input type="submit" class="col blue-text" @click.stop.prevent="submitcompany()" value="Lisa">
+                    <router-link to="/" tag="button" class="col pa-1">Tagasi</router-link>
+                    <input type="submit" class="col blue-text pa-1 routerbtn" @click.stop.prevent="submitcompany()" value="Lisa">
                 </div>
             </div>
         </form>
@@ -179,7 +195,7 @@
             const inputcompany = new Participant(0, nameinput, '', idcodeinput, numparticipants,
                 paymentmethodinput, detailsinput, 'company', myevent);
             try {
-                const result: any = axios.post(BaseUrl.concat(
+                const result: any = await axios.post(BaseUrl.concat(
                     this.eventitem.eventid.toString()).concat('/participants'), inputcompany);
             }
             catch (e) {
@@ -187,9 +203,9 @@
             }
             this.fetchParticipants();
         }
-        private deleteparticipant(p: Participant) {
+        private async deleteparticipant(p: Participant) {
             try {
-                const result: any = axios.delete(BaseUrl.concat(
+                const result: any = await axios.delete(BaseUrl.concat(
                     this.eventitem.eventid.toString()).concat('/participants/').concat(p.participantid.toString()));
             }
             catch (e) {
@@ -203,17 +219,19 @@
             if (this.eventitem.eventDate === '') {
                 return '';
             }
-            const today = new Date(this.eventitem.eventDate || '');
-            let dd: string = today.getDate().toString();
-            let mm: string = (today.getMonth() + 1).toString();
-            const yyyy = today.getFullYear();
+            const eventdate = new Date(this.eventitem.eventDate || '');
+            let dd: string = eventdate.getDate().toString();
+            let mm: string = (eventdate.getMonth() + 1).toString();
+            const hours: string = eventdate.getHours().toString();
+            const minutes: string = eventdate.getMinutes().toString();
+            const yyyy = eventdate.getFullYear();
             if (parseInt(dd, 10) < 10) {
                 dd = '0' + dd;
             }
             if (parseInt(mm, 10) < 10) {
                 mm = '0' + mm;
             }
-            return mm + '-' + dd + '-' + yyyy;
+            return mm + '-' + dd + '-' + yyyy + ' ' + hours + ':' + minutes;
         }
         private formatname(p: Participant) {
             if (p.participantType === 'person') {
@@ -239,7 +257,7 @@
 <style scoped>
     .myrow > div > span, .myrow > div > input,
     .myrow > div > select,
-    .myrow > div > #routerbtn {
+    .myrow > div > .routerbtn {
         padding-bottom: 0px;
         padding-top: 0px;
     }
@@ -259,5 +277,20 @@
 
     .blue-text {
         color: royalblue;
+    }
+    .subheader{
+        padding:0px;
+        margin:0px;
+        width:auto;
+        background-color:royalblue;
+        color:white;
+    }
+    .subheaderimg {
+        width:100%;
+        max-height:65px
+    }
+    .notbold {
+        font-weight:normal;
+        line-height:45px;
     }
 </style>
