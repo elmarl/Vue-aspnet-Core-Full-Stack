@@ -93,24 +93,5 @@ namespace AspNetCoreVueStarterTests.Models
             // Assert here
             Assert.AreEqual(true, isModelStateValid);
         }
-        [TestMethod]
-        public void ParticipantMdel_CustomNumberAttributeValidation()
-        {
-            var sut = new ParticipantModel()
-            {
-                Firstname = "name",
-                Familyname = "fname",
-                Idcode = "wrong",
-                Paymentmethod = "kaardimakse",
-                ParticipantType = "person",
-            };
-            // Set some properties here
-            var context = new ValidationContext(sut, null, null);
-            var results = new List<ValidationResult>();
-            var isModelStateValid = Validator.TryValidateObject(sut, context, results, true);
-
-            // Assert here
-            Assert.AreEqual(false, isModelStateValid);
-        }
     }
 }

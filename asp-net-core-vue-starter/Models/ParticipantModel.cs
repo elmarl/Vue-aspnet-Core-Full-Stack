@@ -1,11 +1,6 @@
-﻿using AspNetCoreVueStarter.CustomValidation;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace AspNetCoreVueStarter.Models
 {
@@ -20,7 +15,8 @@ namespace AspNetCoreVueStarter.Models
         [StringLength(50, ErrorMessage = "Maksimaalselt 50 tähemärki")]
         public string? Familyname { get; set; }
         [Required]
-        [MyNumber]
+        // Save ID code / company registration code as string. Different countries might use 
+        // letters in the ID code field and no arithmatic will be done with. 
         [Column("code")]
         [StringLength(50, ErrorMessage = "Maksimaalselt 50 tähemärki")]
         public string Idcode { get; set; }
