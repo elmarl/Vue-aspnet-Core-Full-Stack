@@ -50,7 +50,6 @@ namespace AspNetCoreVueStarter.Service
             _context.SaveChanges();
             return eventsModel;
         }
-
         // All Participants related actions
         // Get Participants for event by event id
         public List<ParticipantModel> GetParticipants(int id)
