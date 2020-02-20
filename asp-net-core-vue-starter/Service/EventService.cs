@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AspNetCoreVueStarter.Models;
+using System.Text.Encodings;
+using System.Text.Unicode;
 
 namespace AspNetCoreVueStarter.Service
 {
@@ -12,6 +14,10 @@ namespace AspNetCoreVueStarter.Service
         public EventService(IDataContext context)
         {
             _context = context;
+            if (_context != null)
+            {
+                _context.Database.EnsureCreated();
+            }
         }
         // All Event table related actions
         // Get all the events, if no events in the database return an empty array
@@ -76,13 +82,13 @@ namespace AspNetCoreVueStarter.Service
                 if (participantModel.Familyname.Length > 0)
                 {
                     EventModel eventModel = _context.EventSet.Find(id);
-                    if (eventModel == null) { throw new KeyNotFoundException(string.Format("Event with id: '{0}' was not found", id)); }
+                    if (eventModel == null) { return null; }
                     eventModel.Participants.Add(participantModel);
                     _context.SaveChanges();
                     return participantModel;
                 } else
                 {
-                    throw new Exception("Family name must be specified for person type participant");
+                    return null; // Or throw exception with error details...
                 }
             } else if (participantModel.ParticipantType == "company" && participantModel.NumParticipants != null)
             {

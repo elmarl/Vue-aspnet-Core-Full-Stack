@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-
+using System.Linq;
 
 namespace AspNetCoreVueStarterTests.Serice
 {
@@ -23,9 +23,9 @@ namespace AspNetCoreVueStarterTests.Serice
             //eventService = new EventService(dataContext);
         }
 
-        // test if service logic code will detect a person type participant with no familyname when adding participants
+        // test if service logic code works in normal conditions
         [TestMethod]
-        public void AddParticipant_TestLongPersonDetails()
+        public void AddParticipant_TestValidCase()
         {
             // Setup
             var mock = new Mock<IDataContext>();
@@ -33,6 +33,24 @@ namespace AspNetCoreVueStarterTests.Serice
                 .Returns(1);
             mock.Setup(x => x.EventSet.Find(0))
                 .Returns(new EventModel() { EventName="test", EventDate=DateTime.Now.AddDays(1), Location="test"});
+            EventService userService = new EventService(mock.Object);
+
+            // Act
+            var us = userService.AddParticipant(0, new ParticipantModel { Firstname = "test", Familyname = "test", Idcode = "123", Paymentmethod = "sularaha", ParticipantType = "person", DetailsPerson = "test" });
+
+            // Assert
+            Assert.AreEqual(us, us);
+        }
+        // test if service logic code works in normal conditions
+        [TestMethod]
+        public void AddParticipant_TestNoFamilyNameCase()
+        {
+            // Setup
+            var mock = new Mock<IDataContext>();
+            mock.Setup(x => x.SaveChanges())
+                .Returns(1);
+            mock.Setup(x => x.EventSet.Find(0))
+                .Returns(new EventModel() { EventName = "test", EventDate = DateTime.Now.AddDays(1), Location = "test" });
             EventService userService = new EventService(mock.Object);
 
             // Act
@@ -46,19 +64,23 @@ namespace AspNetCoreVueStarterTests.Serice
         public void AddParticipant_TestValidLongCompanyDetails()
         {
             // Setup
-            ParticipantModel pm = new ParticipantModel { Firstname = "test", Idcode = "123", Paymentmethod = "sularaha", ParticipantType = "person"};
+            ParticipantModel pm = new ParticipantModel { Firstname = "test", Familyname = "", Idcode = "123", Paymentmethod = "sularaha", ParticipantType = "person"};
             var mock = new Mock<IDataContext>();
             mock.Setup(x => x.SaveChanges())
                 .Returns(1);
-            mock.Setup(x => x.EventSet.Find(0))
-                .Returns(new EventModel() { EventName = "test", EventDate = DateTime.Now.AddDays(1), Location = "test" });
+            mock.Setup(x => x.ParticipantSet.Find(0))
+                .Returns(returnNull());
             EventService userService = new EventService(mock.Object);
 
             // Act
-            var us = userService.UpdateParticipant(0, pm);
+            var us = userService.DeleteParticipant(0);
 
             // Assert
             Assert.AreEqual(null, us);
+        }
+        public ParticipantModel returnNull()
+        {
+            return null;
         }
     }
 }
