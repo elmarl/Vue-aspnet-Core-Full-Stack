@@ -85,8 +85,8 @@
                     <select id="personpaymentmethod" class="col pa-1" name="personpaymentmethod" v-on:keydown.enter.prevent="submitperson()"><option>Sularaha</option><option>Pangaülekanne</option></select>
                 </div>
                 <div class="row pa-1">
-                    <label for="details" class="col pa-1">Lisainfo</label>
-                    <textarea id="details" type="text" class="col pa-1" v-on:keydown.enter.prevent="submitperson()"></textarea>
+                    <label for="persondetails" class="col pa-1">Lisainfo</label>
+                    <textarea id="persondetails" type="text" class="col pa-1" v-on:keydown.enter.prevent="submitperson()"></textarea>
                 </div>
                 <div class="row pa-1">
                     <router-link to="/" tag="button" class="col pa-1">Tagasi</router-link>
@@ -102,20 +102,20 @@
                     <input id="name" type="text" name="firstname" class="col pa-1" v-on:keydown.enter.prevent="submitcompany()">
                 </div>
                 <div class="row pa-1">
-                    <label for="entityidcode" class="col pa-1">Registrikood</label>
-                    <input id="entityidcode" type="text" name="entityidcode" class="col pa-1" v-on:keydown.enter.prevent="submitcompany()">
+                    <label for="companyidcode" class="col pa-1">Registrikood</label>
+                    <input id="companyidcode" type="text" name="companyidcode" class="col pa-1" v-on:keydown.enter.prevent="submitcompany()">
                 </div>
                 <div class="row pa-1">
                     <label for="numparticipants" class="col pa-1">Osalejate arv</label>
                     <input id="numparticipants" type="text" name="numparticipants" class="col pa-1" v-on:keydown.enter.prevent="submitcompany()">
                 </div>
                 <div class="row pa-1">
-                    <label for="entitypaymentmethod" class="col pa-1">Maksmisviis</label>
-                    <select id="entitypaymentmethod" class="col pa-1" name="entitypaymentmethod" v-on:keydown.enter.prevent="submitcompany()"><option>Sularaha</option><option>Pangaülekanne</option></select>
+                    <label for="companypaymentmethod" class="col pa-1">Maksmisviis</label>
+                    <select id="companypaymentmethod" class="col pa-1" name="companypaymentmethod" v-on:keydown.enter.prevent="submitcompany()"><option>Sularaha</option><option>Pangaülekanne</option></select>
                 </div>
                 <div class="row pa-1">
-                    <label for="entitydetails" class="col pa-1">Lisainfo</label>
-                    <textarea id="entitydetails" type="text" class="col pa-1" v-on:keydown.enter.prevent="submitcompany()"></textarea>
+                    <label for="companydetails" class="col pa-1">Lisainfo</label>
+                    <textarea id="companydetails" type="text" class="col pa-1" v-on:keydown.enter.prevent="submitcompany()"></textarea>
                 </div>
                 <div class="row pa-1">
                     <router-link to="/" tag="button" class="col pa-1">Tagasi</router-link>
@@ -159,7 +159,7 @@
                 this.participantlist = [];
                 for (let i = 0; i < res.length; i++) {
                     this.participantlist.push(new Participant(res[i].participantid, res[i].firstname, res[i].familyname,
-                        res[i].idcode, res[i].numParticipants, res[i].paymentmethod, res[i].details, res[i].participantType, myevent));
+                        res[i].idcode, res[i].numParticipants, res[i].paymentmethod, res[i].DetailsPerson,  res[i].DetailsCompany, res[i].participantType, myevent));
                 }
             } catch (e) {
                 alert('failed fetch');
@@ -171,11 +171,11 @@
             const firstnameinput = (document.getElementById('firstname') as HTMLInputElement).value;
             const familynameinput = (document.getElementById('familyname') as HTMLInputElement).value;
             const idcodeinput = (document.getElementById('idcode') as HTMLInputElement).value;
-            const paymentmethodinput = (document.getElementById('entitypaymentmethod') as HTMLSelectElement).value;
-            const detailsinput = (document.getElementById('details') as HTMLInputElement).value;
+            const paymentmethodinput = (document.getElementById('personpaymentmethod') as HTMLSelectElement).value;
+            const detailsinput = (document.getElementById('persondetails') as HTMLInputElement).value;
             const myevent: Event = new Event(this.eventitem.eventid, null, null, null, null);
             const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
-                paymentmethodinput, detailsinput, 'person', myevent);
+                paymentmethodinput, detailsinput, '', 'person', myevent);
             try {
                 const result: any = await axios.post(BaseUrl.concat(this.eventitem.eventid.toString()).concat('/participants'), inputperson);
             } catch (e) {
@@ -188,12 +188,12 @@
             // ignore id when posting a new event, using undefined
             const nameinput = (document.getElementById('name') as HTMLInputElement).value;
             const numparticipants = parseInt((document.getElementById('numparticipants') as HTMLInputElement).value, 10);
-            const idcodeinput = (document.getElementById('entityidcode') as HTMLInputElement).value;
+            const idcodeinput = (document.getElementById('companyidcode') as HTMLInputElement).value;
             const paymentmethodinput = (document.getElementById('personpaymentmethod') as HTMLSelectElement).value;
-            const detailsinput = (document.getElementById('entitydetails') as HTMLInputElement).value;
+            const detailsinput = (document.getElementById('companydetails') as HTMLInputElement).value;
             const myevent: Event = new Event(this.eventitem.eventid, '', '', '', '');
             const inputcompany = new Participant(0, nameinput, '', idcodeinput, numparticipants,
-                paymentmethodinput, detailsinput, 'company', myevent);
+                paymentmethodinput, '', detailsinput, 'company', myevent);
             try {
                 const result: any = await axios.post(BaseUrl.concat(
                     this.eventitem.eventid.toString()).concat('/participants'), inputcompany);

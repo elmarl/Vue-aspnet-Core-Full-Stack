@@ -32,7 +32,7 @@
             </div>
             <div class="row pa-1">
                 <label for="persondetails" class="col pa-1">Lisainfo</label>
-                <textarea class="col pa-1" id="persondetails" :value="participant.details" />
+                <textarea class="col pa-1" id="persondetails" :value="participant['detailsPerson']"></textarea>
             </div>
             <div class="row pa-1">
                 <a id="routerbtn" class="col pa-1" href="javascript:history.go(-1)">Tagasi</a>
@@ -58,7 +58,7 @@
             </div>
             <div class="row pa-1">
                 <label for="companydetails" class="col pa-1">Lisainfo</label>
-                <textarea class="col pa-1" id="companydetails" :value="participant.details" />
+                <textarea class="col pa-1" id="companydetails" :value="participant['detailsCompany']" />
             </div>
             <div class="row pa-1">
                 <a id="routerbtn" class="col pa-1" href="javascript:history.go(-1)">Tagasi</a>
@@ -77,7 +77,7 @@ import BaseUrl from '../BaseUrl/BaseUrl';
 
 @Component
 export default class EditParticipant extends Vue {
-    private participant: Participant = new Participant(0, '', '', '', 0, '', '', '', new Event(0, '', '', '', ''));
+    private participant: Participant = new Participant(0, '', '', '', 0, '', '', '', '', new Event(0, '', '', '', ''));
     private async created() {
     await this.fetchParticipant();
   }
@@ -110,7 +110,7 @@ export default class EditParticipant extends Vue {
             const detailsinput = (document.getElementById('persondetails') as HTMLTextAreaElement).value;
             const myevent: Event = new Event(eventid, null, null, null, null);
             const inputperson = new Participant(0, firstnameinput, familynameinput, idcodeinput, 0,
-                paymentmethodinput, detailsinput, 'person', myevent);
+                paymentmethodinput, detailsinput, '', 'person', myevent);
             const response = await axios.put<Participant>(
                 BaseUrl.concat(eventid.toString()).concat('/participants/').concat(participantid), inputperson);
         } catch (e) {
@@ -130,7 +130,7 @@ export default class EditParticipant extends Vue {
             const detailsinput = (document.getElementById('companydetails') as HTMLTextAreaElement).value;
             const myevent: Event = new Event(eventid, null, null, null, null);
             const inputcompany = new Participant(0, firstnameinput, '', idcodeinput, numparticipantsinput,
-            paymentmethodinput, detailsinput, 'company', myevent);
+            paymentmethodinput, '', detailsinput,'company', myevent);
             const response = await axios.put<Participant>(
                 BaseUrl.concat(eventid.toString()).concat('/participants/').concat(participantid), inputcompany);
         } catch (e) {

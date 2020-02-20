@@ -41,10 +41,6 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
-            "MSTest.TestFramework": {
-              "target": "Package",
-              "version": "[2.1.0, )"
-            },
             "Microsoft.AspNetCore.SpaServices.Extensions": {
               "target": "Package",
               "version": "[3.1.1, )"
@@ -72,10 +68,6 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.1, )"
-            },
-            "Moq": {
-              "target": "Package",
-              "version": "[4.13.1, )"
             },
             "VueCliMiddleware": {
               "target": "Package",
@@ -145,6 +137,10 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.0, )"
+            },
             "MSTest.TestAdapter": {
               "target": "Package",
               "version": "[2.0.0, )"

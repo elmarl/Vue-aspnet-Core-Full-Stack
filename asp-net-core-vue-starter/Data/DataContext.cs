@@ -9,15 +9,24 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AspNetCoreVueStarter.Data
 {
     //Database representational model
-    public class DataContext : DbContext
+    public class DataContext : DbContext, IDataContext
     {
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
         }
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
+        }
+        public DbSet<EventModel> EventSet { get; set; }
+        public DbSet<ParticipantModel> ParticipantSet { get; set; }
 
-        public DbSet<EventModel> EventModel { get; set; }
-        public DbSet<ParticipantModel> ParticipantModel { get; set; }
+        int IDataContext.SaveChanges()
+        {
+            return base.SaveChanges();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -26,5 +35,6 @@ namespace AspNetCoreVueStarter.Data
         {
 
         }
+
     }
 }

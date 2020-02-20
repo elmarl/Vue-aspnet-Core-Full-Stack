@@ -14,5 +14,6 @@ namespace AspNetCoreVueStarter.Service
         ParticipantModel GetParticipant(int id);
         List<ParticipantModel> GetParticipants(int id);
         ParticipantModel UpdateParticipant(int id, ParticipantModel participantModel);
+        void SaveChanges();
     }
 }

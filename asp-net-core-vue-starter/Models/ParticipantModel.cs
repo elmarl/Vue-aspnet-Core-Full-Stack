@@ -24,7 +24,9 @@ namespace AspNetCoreVueStarter.Models
         [Required]
         public string Paymentmethod { get; set; }
         [StringLength(5000, ErrorMessage = "Maksimaalselt 5000 tähemärki")]
-        public string Details { get; set; }
+        public string DetailsCompany { get; set; }
+        [StringLength(1500, ErrorMessage = "Maksimaalselt 1500 tähemärki")]
+        public string DetailsPerson { get; set; }
         [Required]
         public string ParticipantType { get; set; }
         // JsonIgnore to avoid infinite recursive loop

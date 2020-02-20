@@ -38,8 +38,6 @@ namespace AspNetCoreVueStarter.Controllers
             }
         }
         // POST: api/Events
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public ActionResult<EventModel> PostEventModel(EventModel eventModel)
         {
@@ -54,6 +52,7 @@ namespace AspNetCoreVueStarter.Controllers
             }
         }
         // DELETE: api/Events/5
+        // delete event by id, return ok result if deleted successfully, otherwise return notfound
         [HttpDelete("{id}")]
         public ActionResult<EventModel> DeleteEventModel(int id)
         {
@@ -67,6 +66,7 @@ namespace AspNetCoreVueStarter.Controllers
                 return Ok(eventsModel);
             }
         }
+        // add new participant 
         [HttpPost("{id}/participants")]
         public ActionResult<ParticipantModel> PostParticipantModel(int id, ParticipantModel pModel)
         {

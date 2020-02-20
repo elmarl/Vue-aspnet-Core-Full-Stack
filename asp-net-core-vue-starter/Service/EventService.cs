@@ -8,45 +8,34 @@ namespace AspNetCoreVueStarter.Service
 {
     public class EventService : IEventService
     {
-        private readonly DataContext _context;
-        public EventService(DataContext context)
+        private readonly IDataContext _context;
+        public EventService(IDataContext context)
         {
             _context = context;
-            if (_context != null)
-            {
-                _context.Database.EnsureCreated();
-            }
         }
         // All Event table related actions
         // Get all the events, if no events in the database return an empty array
         public List<EventModel> GetEvents()
         {
-            if (_context.EventModel != null)
-            {
-                return _context.EventModel.ToList();
-            }
-            else
-            {
-                return new List<EventModel>();
-            }
+            return _context.EventSet.ToList();
         }
         public EventModel GetEvent(int id)
         {
-            return _context.EventModel.Find(id);
+            return _context.EventSet.Find(id);
         }
         public void AddEvent(EventModel eventModel)
         {
-            _context.EventModel.Add(eventModel);
+            _context.EventSet.Add(eventModel);
             _context.SaveChanges();
         }
         public EventModel DeleteEvent(int id)
         {
-            EventModel eventsModel = _context.EventModel.Find(id);
+            EventModel eventsModel = _context.EventSet.Find(id);
             if (eventsModel == null)
             {
                 return null;
             }
-            _context.EventModel.Remove(eventsModel);
+            _context.EventSet.Remove(eventsModel);
             _context.SaveChanges();
             return eventsModel;
         }
@@ -56,7 +45,7 @@ namespace AspNetCoreVueStarter.Service
         {
             try
             {
-                return _context.ParticipantModel.Where(a => a.EventModel.Eventid == id).ToList();
+                return _context.ParticipantSet.Where(a => a.EventModel.Eventid == id).ToList();
             }
             catch (ArgumentNullException ex)
             {
@@ -68,7 +57,7 @@ namespace AspNetCoreVueStarter.Service
         {
             try
             {
-                return _context.ParticipantModel.Where(a => a.Participantid == id).First();
+                return _context.ParticipantSet.Where(a => a.Participantid == id).First();
             }
             catch (Exception ex)
             {
@@ -81,10 +70,10 @@ namespace AspNetCoreVueStarter.Service
         // by the model.
         public ParticipantModel AddParticipant(int id, ParticipantModel participantModel)
         {
-            if(participantModel.ParticipantType == "person" && participantModel.Familyname.Length>0) {
-                if (participantModel.Details.Length < 1500)
+            if(participantModel.ParticipantType == "person") {
+                if (participantModel.Familyname.Length > 0)
                 {
-                    EventModel eventModel = _context.EventModel.Find(id);
+                    EventModel eventModel = _context.EventSet.Find(id);
                     eventModel.Participants.Add(participantModel);
                     _context.SaveChanges();
                     return participantModel;
@@ -94,7 +83,7 @@ namespace AspNetCoreVueStarter.Service
                 }
             } else if (participantModel.ParticipantType == "company" && participantModel.NumParticipants != null)
             {
-                EventModel eventModel = _context.EventModel.Find(id);
+                EventModel eventModel = _context.EventSet.Find(id);
                 eventModel.Participants.Add(participantModel);
                 _context.SaveChanges();
                 return participantModel;
@@ -108,26 +97,26 @@ namespace AspNetCoreVueStarter.Service
         {
             try
             {
-                ParticipantModel originalparticipant = _context.ParticipantModel.FirstOrDefault(o => o.Participantid == id);
+                ParticipantModel originalparticipant = _context.ParticipantSet.FirstOrDefault(o => o.Participantid == id);
                 // participant type is not allowed to change on this site
                 if(originalparticipant.ParticipantType != participantModel.ParticipantType) { return null; }
 
                 // Dont allow family name to be empty on person participants
-                if(participantModel.ParticipantType == "person" && participantModel.Familyname != null && participantModel.Familyname.Length>0 && participantModel.Details.Length<1500) {
+                if(participantModel.ParticipantType == "person" && participantModel.Familyname != null && participantModel.Familyname.Length>0) {
                     originalparticipant.Firstname = participantModel.Firstname;
                     originalparticipant.Familyname = participantModel.Familyname;
                     originalparticipant.Idcode = participantModel.Idcode;
                     originalparticipant.NumParticipants = participantModel.NumParticipants;
-                    originalparticipant.Details = participantModel.Details;
+                    originalparticipant.DetailsPerson = participantModel.DetailsPerson;
                     _context.SaveChanges();
                     return participantModel;
                 } // Dont allow number of participants to be null on company participants
-                else if(participantModel.ParticipantType == "company" && participantModel.NumParticipants != null && participantModel.Details.Length < 5000) {
+                else if(participantModel.ParticipantType == "company" && participantModel.NumParticipants != null) {
                     originalparticipant.Firstname = participantModel.Firstname;
                     originalparticipant.Familyname = participantModel.Familyname;
                     originalparticipant.Idcode = participantModel.Idcode;
                     originalparticipant.NumParticipants = participantModel.NumParticipants;
-                    originalparticipant.Details = participantModel.Details;
+                    originalparticipant.DetailsCompany = participantModel.DetailsCompany;
                     _context.SaveChanges();
                     return participantModel;
                 }
@@ -143,14 +132,19 @@ namespace AspNetCoreVueStarter.Service
         // Delete Participant
         public ParticipantModel DeleteParticipant(int id)
         {
-            ParticipantModel pModel = _context.ParticipantModel.Find(id);
+            ParticipantModel pModel = _context.ParticipantSet.Find(id);
             if (pModel == null)
             {
                 return null;
             }
-            _context.ParticipantModel.Remove(pModel);
+            _context.ParticipantSet.Remove(pModel);
             _context.SaveChanges();
             return pModel;
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
         }
     }
 }

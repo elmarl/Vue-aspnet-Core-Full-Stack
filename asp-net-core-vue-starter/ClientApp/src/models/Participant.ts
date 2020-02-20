@@ -7,7 +7,8 @@ export class Participant {
         public idcode: string,
         public numParticipants: number = 0,
         public paymentmethod: string,
-        public details: string,
+        public detailsPerson: string,
+        public detailsCompany: string,
         public participantType: string,
         public event: Event,
     ) { }

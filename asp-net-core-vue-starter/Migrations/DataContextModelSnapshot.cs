@@ -19,7 +19,7 @@ namespace AspNetCoreVueStarter.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AspNetCoreVueStarter.Models.EventModel", b =>
+            modelBuilder.Entity("AspNetCoreVueStarter.Models.EventSet", b =>
                 {
                     b.Property<int>("Eventid")
                         .ValueGeneratedOnAdd()
@@ -45,19 +45,23 @@ namespace AspNetCoreVueStarter.Migrations
 
                     b.HasKey("Eventid");
 
-                    b.ToTable("EventModel");
+                    b.ToTable("EventSet");
                 });
 
-            modelBuilder.Entity("AspNetCoreVueStarter.Models.ParticipantModel", b =>
+            modelBuilder.Entity("AspNetCoreVueStarter.Models.ParticipantSet", b =>
                 {
                     b.Property<int>("Participantid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Details")
+                    b.Property<string>("DetailsCompany")
                         .HasColumnType("nvarchar(max)")
                         .HasMaxLength(5000);
+
+                    b.Property<string>("DetailsPerson")
+                        .HasColumnType("nvarchar(1500)")
+                        .HasMaxLength(1500);
 
                     b.Property<int?>("EventModelEventid")
                         .HasColumnType("int");
@@ -93,12 +97,12 @@ namespace AspNetCoreVueStarter.Migrations
 
                     b.HasIndex("EventModelEventid");
 
-                    b.ToTable("ParticipantModel");
+                    b.ToTable("ParticipantSet");
                 });
 
-            modelBuilder.Entity("AspNetCoreVueStarter.Models.ParticipantModel", b =>
+            modelBuilder.Entity("AspNetCoreVueStarter.Models.ParticipantSet", b =>
                 {
-                    b.HasOne("AspNetCoreVueStarter.Models.EventModel", "EventModel")
+                    b.HasOne("AspNetCoreVueStarter.Models.EventSet", "EventSet")
                         .WithMany("Participants")
                         .HasForeignKey("EventModelEventid");
                 });
