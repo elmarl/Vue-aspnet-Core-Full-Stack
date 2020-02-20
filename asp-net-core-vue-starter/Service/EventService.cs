@@ -23,11 +23,13 @@ namespace AspNetCoreVueStarter.Service
         {
             return _context.EventSet.Find(id);
         }
+        // Add an event to the database
         public void AddEvent(EventModel eventModel)
         {
             _context.EventSet.Add(eventModel);
             _context.SaveChanges();
         }
+        // Delete an event from the database
         public EventModel DeleteEvent(int id)
         {
             EventModel eventsModel = _context.EventSet.Find(id);
@@ -74,16 +76,18 @@ namespace AspNetCoreVueStarter.Service
                 if (participantModel.Familyname.Length > 0)
                 {
                     EventModel eventModel = _context.EventSet.Find(id);
+                    if (eventModel == null) { throw new KeyNotFoundException(string.Format("Event with id: '{0}' was not found", id)); }
                     eventModel.Participants.Add(participantModel);
                     _context.SaveChanges();
                     return participantModel;
                 } else
                 {
-                    return null;
+                    throw new Exception("Family name must be specified for person type participant");
                 }
             } else if (participantModel.ParticipantType == "company" && participantModel.NumParticipants != null)
             {
                 EventModel eventModel = _context.EventSet.Find(id);
+                if (eventModel == null) { throw new KeyNotFoundException(string.Format("Event with id: '{0}' was not found", id)); }
                 eventModel.Participants.Add(participantModel);
                 _context.SaveChanges();
                 return participantModel;
@@ -93,32 +97,34 @@ namespace AspNetCoreVueStarter.Service
             }
         }
         // Update Participant 
-        public ParticipantModel UpdateParticipant(int id, ParticipantModel participantModel)
+        public ParticipantModel UpdateParticipant(int id, ParticipantModel newParticipantModel)
         {
             try
             {
                 ParticipantModel originalparticipant = _context.ParticipantSet.FirstOrDefault(o => o.Participantid == id);
                 // participant type is not allowed to change on this site
-                if(originalparticipant.ParticipantType != participantModel.ParticipantType) { return null; }
-
-                // Dont allow family name to be empty on person participants
-                if(participantModel.ParticipantType == "person" && participantModel.Familyname != null && participantModel.Familyname.Length>0) {
-                    originalparticipant.Firstname = participantModel.Firstname;
-                    originalparticipant.Familyname = participantModel.Familyname;
-                    originalparticipant.Idcode = participantModel.Idcode;
-                    originalparticipant.NumParticipants = participantModel.NumParticipants;
-                    originalparticipant.DetailsPerson = participantModel.DetailsPerson;
+                if(originalparticipant.ParticipantType != newParticipantModel.ParticipantType)
+                {
+                    throw new Exception("Osaleja tüüp ei saa muutuda");
+                }
+                // Dont allow family name to be empty on person participants. Only update columns for participant type person. All fields
+                // listed below are required by the ParticipantModel except for familyname for person and numparticipants for company. These
+                // need to be checked when updating if they are changed to null or not (this is due to having one table containing both types).
+                if(newParticipantModel.ParticipantType == "person") {
+                    originalparticipant.Firstname = newParticipantModel.Firstname;
+                    originalparticipant.Familyname = (newParticipantModel.Familyname != null && newParticipantModel.Familyname.Length > 0) ? newParticipantModel.Familyname : originalparticipant.Familyname;
+                    originalparticipant.Idcode = newParticipantModel.Idcode;
+                    originalparticipant.DetailsPerson = newParticipantModel.DetailsPerson;
                     _context.SaveChanges();
-                    return participantModel;
-                } // Dont allow number of participants to be null on company participants
-                else if(participantModel.ParticipantType == "company" && participantModel.NumParticipants != null) {
-                    originalparticipant.Firstname = participantModel.Firstname;
-                    originalparticipant.Familyname = participantModel.Familyname;
-                    originalparticipant.Idcode = participantModel.Idcode;
-                    originalparticipant.NumParticipants = participantModel.NumParticipants;
-                    originalparticipant.DetailsCompany = participantModel.DetailsCompany;
+                    return newParticipantModel;
+                } // Dont allow number of participants to be null on company participants. Only update columns for participant type company
+                else if(newParticipantModel.ParticipantType == "company") {
+                    originalparticipant.Firstname = newParticipantModel.Firstname;
+                    originalparticipant.Idcode = newParticipantModel.Idcode;
+                    originalparticipant.NumParticipants = (newParticipantModel.NumParticipants != null) ? newParticipantModel.NumParticipants : originalparticipant.NumParticipants;
+                    originalparticipant.DetailsCompany = newParticipantModel.DetailsCompany;
                     _context.SaveChanges();
-                    return participantModel;
+                    return newParticipantModel;
                 }
                 else
                 {
@@ -126,7 +132,7 @@ namespace AspNetCoreVueStarter.Service
                 }
             } catch (Exception ex)
             {
-                return null;
+                throw new Exception(ex.StackTrace);
             }
         }
         // Delete Participant

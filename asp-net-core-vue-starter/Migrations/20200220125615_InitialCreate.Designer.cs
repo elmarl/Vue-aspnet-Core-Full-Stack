@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetCoreVueStarter.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200219231515_InitialCreate")]
+    [Migration("20200220125615_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace AspNetCoreVueStarter.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AspNetCoreVueStarter.Models.EventSet", b =>
+            modelBuilder.Entity("AspNetCoreVueStarter.Models.EventModel", b =>
                 {
                     b.Property<int>("Eventid")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace AspNetCoreVueStarter.Migrations
                     b.ToTable("EventSet");
                 });
 
-            modelBuilder.Entity("AspNetCoreVueStarter.Models.ParticipantSet", b =>
+            modelBuilder.Entity("AspNetCoreVueStarter.Models.ParticipantModel", b =>
                 {
                     b.Property<int>("Participantid")
                         .ValueGeneratedOnAdd()
@@ -102,9 +102,9 @@ namespace AspNetCoreVueStarter.Migrations
                     b.ToTable("ParticipantSet");
                 });
 
-            modelBuilder.Entity("AspNetCoreVueStarter.Models.ParticipantSet", b =>
+            modelBuilder.Entity("AspNetCoreVueStarter.Models.ParticipantModel", b =>
                 {
-                    b.HasOne("AspNetCoreVueStarter.Models.EventSet", "EventSet")
+                    b.HasOne("AspNetCoreVueStarter.Models.EventModel", "EventModel")
                         .WithMany("Participants")
                         .HasForeignKey("EventModelEventid");
                 });

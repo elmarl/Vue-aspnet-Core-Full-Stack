@@ -159,10 +159,10 @@
                 this.participantlist = [];
                 for (let i = 0; i < res.length; i++) {
                     this.participantlist.push(new Participant(res[i].participantid, res[i].firstname, res[i].familyname,
-                        res[i].idcode, res[i].numParticipants, res[i].paymentmethod, res[i].DetailsPerson,  res[i].DetailsCompany, res[i].participantType, myevent));
+                        res[i].idcode, res[i].numParticipants, res[i].paymentmethod, res[i].detailsPerson,  res[i].detailsCompany, res[i].participantType, myevent));
                 }
             } catch (e) {
-                alert('failed fetch');
+                alert(e);
             }
         }
         // submit person form
@@ -179,7 +179,7 @@
             try {
                 const result: any = await axios.post(BaseUrl.concat(this.eventitem.eventid.toString()).concat('/participants'), inputperson);
             } catch (e) {
-                alert('error posting data');
+                alert(e);
             }
             this.fetchParticipants();
         }
@@ -199,7 +199,7 @@
                     this.eventitem.eventid.toString()).concat('/participants'), inputcompany);
             }
             catch (e) {
-                alert('error posting data');
+                alert(e);
             }
             this.fetchParticipants();
         }

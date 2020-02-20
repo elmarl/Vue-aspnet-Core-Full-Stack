@@ -20,7 +20,7 @@ namespace AspNetCoreVueStarter.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventModel", x => x.Eventid);
+                    table.PrimaryKey("PK_EventSet", x => x.Eventid);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,9 +41,9 @@ namespace AspNetCoreVueStarter.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ParticipantModel", x => x.Participantid);
+                    table.PrimaryKey("PK_ParticipantSet", x => x.Participantid);
                     table.ForeignKey(
-                        name: "FK_ParticipantModel_EventModel_EventModelEventid",
+                        name: "FK_ParticipantSet_EventSet_EventModelEventid",
                         column: x => x.EventModelEventid,
                         principalTable: "EventSet",
                         principalColumn: "Eventid",
@@ -51,7 +51,7 @@ namespace AspNetCoreVueStarter.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParticipantModel_EventModelEventid",
+                name: "IX_ParticipantSet_EventModelEventid",
                 table: "ParticipantSet",
                 column: "EventModelEventid");
         }

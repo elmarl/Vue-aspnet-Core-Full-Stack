@@ -26,7 +26,7 @@ namespace AspNetCoreVueStarterTests.Models
         [TestMethod]
         public void EventModel_CustomDateAttributeValidation()
         {
-            var sut = new EventModel() { EventName = "name", EventDate = DateTime.Today.AddDays(-1), Location = "loc", };
+            var sut = new EventModel() { EventName = "name", EventDate = DateTime.Now.AddHours(-1), Location = "loc", };
             // Set some properties here
             var context = new ValidationContext(sut, null, null);
             var results = new List<ValidationResult>();

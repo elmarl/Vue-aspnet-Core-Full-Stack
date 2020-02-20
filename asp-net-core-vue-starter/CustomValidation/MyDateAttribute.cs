@@ -11,9 +11,9 @@ namespace AspNetCoreVueStarter.CustomValidation
         }
         protected override ValidationResult IsValid(object objValue, ValidationContext validationContext)
         {
-            // Validate if entered date is in the future
+            // Validate if entered date is in the future, taking into consideration the year, month, day, hours, minutes.
             var dateValue = objValue as DateTime? ?? new DateTime();
-            if (dateValue.Date < DateTime.Now.Date)
+            if (dateValue < DateTime.Now)
             {
                 return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             }

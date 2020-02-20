@@ -70,14 +70,13 @@
             const dateinput = (document.getElementById('date') as HTMLInputElement).value;
             const locationinput = (document.getElementById('location') as HTMLInputElement).value;
             const detailsinput = (document.getElementById('details') as HTMLTextAreaElement).value; 
-            // ignore id when posting a new event, using undefined
+            // ignore id when posting a new event, using undefined. The database will assign it an id.
             const inputevent: Event = new Event(undefined, nameinput, dateinput, locationinput, detailsinput);
-            // var msg = JSON.stringify(inputevent);
             try {
                 const result: any = await axios.post(BaseUrl, inputevent);
             }
-            catch(e) {
-                alert('error posting data');
+            catch (e) {
+                alert(e);
                 return;
             }
             this.$router.push('/');
