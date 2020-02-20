@@ -33,10 +33,10 @@ namespace AspNetCoreVueStarter.Migrations
                     Familyname = table.Column<string>(maxLength: 50, nullable: true),
                     code = table.Column<string>(maxLength: 50, nullable: false),
                     NumParticipants = table.Column<int>(nullable: true),
-                    Paymentmethod = table.Column<string>(nullable: false),
+                    Paymentmethod = table.Column<string>(maxLength: 50, nullable: false),
                     DetailsCompany = table.Column<string>(maxLength: 5000, nullable: true),
                     DetailsPerson = table.Column<string>(maxLength: 1500, nullable: true),
-                    ParticipantType = table.Column<string>(nullable: false),
+                    ParticipantType = table.Column<string>(maxLength: 10, nullable: false),
                     EventModelEventid = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

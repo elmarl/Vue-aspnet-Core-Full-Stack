@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetCoreVueStarter.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200220125615_InitialCreate")]
+    [Migration("20200220160837_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,11 +89,13 @@ namespace AspNetCoreVueStarter.Migrations
 
                     b.Property<string>("ParticipantType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
 
                     b.Property<string>("Paymentmethod")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("Participantid");
 
