@@ -47,7 +47,7 @@ namespace AspNetCoreVueStarter.Migrations
                         column: x => x.EventModelEventid,
                         principalTable: "EventSet",
                         principalColumn: "Eventid",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

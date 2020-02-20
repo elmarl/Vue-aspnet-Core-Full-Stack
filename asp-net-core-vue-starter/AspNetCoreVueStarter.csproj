@@ -42,6 +42,8 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="Migrations\20200220171938_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200220171938_InitialCreate.Designer.cs" />
     <Compile Remove="Models\WeatherForecast.cs" />
   </ItemGroup>
 
